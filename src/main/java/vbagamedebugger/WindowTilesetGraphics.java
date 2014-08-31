@@ -2,15 +2,19 @@ package vbagamedebugger;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
+import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import vbagamedebugger.games.pokemon.TilesetLoader;
 
@@ -19,18 +23,28 @@ public class WindowTilesetGraphics extends JFrame {
 
 	final int scaleFactor = 8;
 
+	private final JPanel panButtons = new JPanel(new FlowLayout());
+
 	public WindowTilesetGraphics(final BufferedImage sourceImage) {
 		this.sourceImage = sourceImage;
 		this.setTitle("tileset view");
 		this.setSize(sourceImage.getWidth() * this.scaleFactor, sourceImage.getHeight() * this.scaleFactor);
 		this.setVisible(true);
 
+		this.panButtons.add(new XButton("Refresh", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				WindowTilesetGraphics.this.updateTileset();
+			}
+		}));
+
+		this.add(this.panButtons, BorderLayout.NORTH);
 		this.addRenderer();
 
+		this.updateTileset();
 	}
 
 	private void addRenderer() {
-
 		final AffineTransform scaler = new AffineTransform();
 		scaler.scale(this.scaleFactor, this.scaleFactor);
 
@@ -56,12 +70,16 @@ public class WindowTilesetGraphics extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
 
-				System.out.println("repainting");
-				WindowTilesetGraphics.this.sourceImage = new TilesetLoader().load();
-				WindowTilesetGraphics.this.repaint();
+				WindowTilesetGraphics.this.updateTileset();
 			}
 		});
 
 		this.add(renderer, BorderLayout.CENTER);
+	}
+
+	private void updateTileset() {
+		System.out.println("reloading tileset and repainting");
+		this.sourceImage = new TilesetLoader().load();
+		this.repaint();
 	}
 }
