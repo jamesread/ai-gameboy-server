@@ -31,16 +31,6 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		new JCommander(Main.args, null, args);
 
-		if (Main.args.listener) {
-			new Thread(new TcpControlListener(), "tcpControlListener").start();
-		}
-
-		if (Main.args.startMapCol) {
-			new WindowMapCol();
-		}
-
-		new WindowTilesetGraphics(new TilesetBitmap());
-
 		System.load(System.getProperty("user.dir") + "/lib/libvba.so");
 		Thread t = new Thread() {
 			@Override
@@ -53,37 +43,45 @@ public class Main {
 
 				while (Main.run) {
 					try {
-						if (keymask != 0) {
-							Gb.step(keymask);
-							Gb.step(keymask);
-							Gb.step(keymask);
-							Gb.step(keymask);
+						if (Main.keymask != 0) {
+							Gb.step(Main.keymask);
+							Gb.step(Main.keymask);
+							Gb.step(Main.keymask);
+							Gb.step(Main.keymask);
 
-							keymask = 0;
+							Main.keymask = 0;
 
-							Gb.step(keymask);
+							Gb.step(Main.keymask);
 						} else {
 							Gb.step();
 						}
 					} catch (Exception e) {
-
+						e.printStackTrace();
 					}
 				}
 			};
 		};
 		t.start();
 
-		wndDebug.setVisible(true);
+		Main.wndDebug.setVisible(true);
 	}
 
 	public static void newWatchDialog(int start, int stop) {
-		watchDialogs.add(new WindowWatch(start, stop));
+		Main.watchDialogs.add(new WindowWatch(start, stop));
 	}
 
 	private static void onEmulatorStarted() {
-		new Thread(gameState, "gameStateupdater").start();
+		new Thread(Main.gameState, "gameStateupdater").start();
 
-		if (args.startBot) {
+		if (Main.args.listener) {
+			new Thread(new TcpControlListener(), "tcpControlListener").start();
+		}
+
+		if (Main.args.startMapCol) {
+			new WindowMapCol();
+		}
+
+		if (Main.args.startBot) {
 			new WindowBotWatcher();
 		}
 	}
@@ -92,7 +90,7 @@ public class Main {
 		for (Buttons button : buttons) {
 			System.out.println("Button:" + button);
 
-			keymask |= button.mask;
+			Main.keymask |= button.mask;
 		}
 
 		try {
@@ -121,23 +119,24 @@ public class Main {
 		}
 
 		if (addition) {
-			valInt = lastPromptedInt + valInt;
+			valInt = Main.lastPromptedInt + valInt;
 		}
 
-		lastPromptedInt = valInt;
+		Main.lastPromptedInt = valInt;
 
 		return valInt;
 	}
 
 	public static void shutdown() {
 		System.out.println("shutdown request ");
-		run = false;
+
+		Main.run = false;
 		Gb.shutdown();
 		System.out.println("shutdown finished request");
 		System.exit(0);
 	}
 
 	public static void unregisterWatchDialog(WindowWatch watchDialog) {
-		watchDialogs.remove(watchDialog);
+		Main.watchDialogs.remove(watchDialog);
 	}
 }
