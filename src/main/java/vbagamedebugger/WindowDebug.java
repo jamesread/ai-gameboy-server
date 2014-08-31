@@ -15,6 +15,8 @@ public class WindowDebug extends JFrame {
 	private final JButton btnMemSnapshot = new JButton("snapshot");
 	private final JButton btnNewWatch = new JButton("Watch...");
 
+	private final JButton btnShowTileset = new JButton("Tileset");
+
 	private final GbaController gbac = new GbaController();
 
 	private final JButton btnExit = new JButton("Exit");
@@ -99,6 +101,15 @@ public class WindowDebug extends JFrame {
 				new WindowBotWatcher();
 			}
 		}), gbc);
+
+		gbc.gridy++;
+		this.btnShowTileset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new WindowTilesetGraphics(new TilesetBitmap());
+			}
+		});
+		this.add(this.btnShowTileset, gbc);
 
 		gbc.gridy++;
 		gbc.gridwidth = 1;
