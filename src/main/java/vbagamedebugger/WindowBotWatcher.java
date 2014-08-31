@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
 import vbagamedebugger.games.pokemon.Bot;
@@ -18,6 +19,8 @@ public class WindowBotWatcher extends JFrame implements Runnable {
 
 	private final JTextArea txtBot = new JTextArea();
 	private final JTextArea txtGameState = new JTextArea();
+
+	private final JSplitPane splitTextboxes = new JSplitPane();
 
 	private final JCheckBox chkIdle = new JCheckBox("Idle?");
 
@@ -38,12 +41,18 @@ public class WindowBotWatcher extends JFrame implements Runnable {
 
 		this.txtBot.setEditable(false);
 		this.txtBot.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
-		this.add(new JScrollPane(this.txtBot), gbc);
+		this.splitTextboxes.setTopComponent(this.txtBot);
 
 		gbc.gridy++;
 		this.txtGameState.setEditable(false);
 		this.txtGameState.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		this.add(new JScrollPane(this.txtGameState), gbc);
+		this.splitTextboxes.setBottomComponent(this.txtGameState);
+
+		this.splitTextboxes.setOrientation(JSplitPane.VERTICAL_SPLIT);
+		this.splitTextboxes.setDividerLocation(.3d);
+
+		this.add(this.splitTextboxes, gbc);
 
 		gbc.gridy++;
 		gbc.weighty = 0;
