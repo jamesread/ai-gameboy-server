@@ -46,6 +46,10 @@ public class PokeCharset {
 		PokeCharset.charset.put(186, "\u00E9"); // poke ézzzzz
 		PokeCharset.charset.put(156, ":");
 		PokeCharset.charset.put(190, "zu0162"); // apostrophie T
+		PokeCharset.charset.put(82, "*"); // some sort of junk character
+		PokeCharset.charset.put(85, "*"); // some sort of junk character
+		PokeCharset.charset.put(86, "*"); // some sort of junk character
+		PokeCharset.charset.put(87, "*"); // some sort of junk character
 
 		idx = 0;
 		for (int i = 0xa0; i < 0xb9; i++) {

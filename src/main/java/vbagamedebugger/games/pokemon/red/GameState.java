@@ -142,8 +142,12 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 		this.encounterablePokemon.clear();
 
 		for (int i = 0; i < 10; i++) {
-			int level = Gb.readMemory(baseAddress + (i * 2));
-			int pokemon = Gb.readMemory(baseAddress + (i * 2) + 1);
+			final int level = Gb.readMemory(baseAddress + (i * 2));
+			final int pokemon = Gb.readMemory(baseAddress + (i * 2) + 1);
+
+			if (pokemon == 0) {
+				break;
+			}
 
 			this.encounterablePokemon.add(new Pokemon(pokemon, level));
 		}
@@ -170,15 +174,17 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 
 		this.map = new Block[this.mapHeightBlocks][this.mapWidthBlocks];
 
-		int base = 0xc71b;
+		int base = 0xc6ea;
 		for (int y = 0; y < this.mapHeightBlocks; y++) {
+			base += 3;
+
 			for (int x = 0; x < this.mapWidthBlocks; x++) {
 				this.map[y][x] = new Block(Gb.readMemory(base), base);
 
 				base++;
 			}
 
-			base += 6;
+			base += 3;
 
 		}
 	}

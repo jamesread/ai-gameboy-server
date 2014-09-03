@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 
 import com.aurellem.gb.Gb;
 
-public class TilesetBitmap extends BufferedImage {
+public class TileBitmap extends BufferedImage {
 
 	public static int gbcol(int index, int b1, int b2) {
 		boolean one = ((b1 >> index) & 1) != 0;
@@ -32,7 +32,7 @@ public class TilesetBitmap extends BufferedImage {
 	private int col = -1;
 	private int row = 0;
 
-	public TilesetBitmap() {
+	public TileBitmap() {
 		super(16 * 10, 5 * 10, BufferedImage.TYPE_INT_RGB);
 
 		this.g = this.createGraphics();
@@ -58,14 +58,14 @@ public class TilesetBitmap extends BufferedImage {
 
 			System.out.println(String.format("reading 2 bytes starting from: %x = %x %x  %d:%d", base + ((i * 2) + this.tileCount), b1, b2, x, y));
 
-			this.setRGB(x + 7, y, TilesetBitmap.gbcol(0, b1, b2));
-			this.setRGB(x + 6, y, TilesetBitmap.gbcol(1, b1, b2));
-			this.setRGB(x + 5, y, TilesetBitmap.gbcol(2, b1, b2));
-			this.setRGB(x + 4, y, TilesetBitmap.gbcol(3, b1, b2));
-			this.setRGB(x + 3, y, TilesetBitmap.gbcol(4, b1, b2));
-			this.setRGB(x + 2, y, TilesetBitmap.gbcol(5, b1, b2));
-			this.setRGB(x + 1, y, TilesetBitmap.gbcol(6, b1, b2));
-			this.setRGB(x + 0, y, TilesetBitmap.gbcol(7, b1, b2));
+			this.setRGB(x + 7, y, TileBitmap.gbcol(0, b1, b2));
+			this.setRGB(x + 6, y, TileBitmap.gbcol(1, b1, b2));
+			this.setRGB(x + 5, y, TileBitmap.gbcol(2, b1, b2));
+			this.setRGB(x + 4, y, TileBitmap.gbcol(3, b1, b2));
+			this.setRGB(x + 3, y, TileBitmap.gbcol(4, b1, b2));
+			this.setRGB(x + 2, y, TileBitmap.gbcol(5, b1, b2));
+			this.setRGB(x + 1, y, TileBitmap.gbcol(6, b1, b2));
+			this.setRGB(x + 0, y, TileBitmap.gbcol(7, b1, b2));
 
 			y++;
 		}

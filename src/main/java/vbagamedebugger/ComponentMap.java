@@ -34,12 +34,21 @@ public class ComponentMap extends Component {
 	}
 
 	private void drawBlock(Graphics g, int x, int y, int colWidth, int rowWidth, Block block) {
+		x = x * 2;
+		y = y * 2;
 		g.setColor(Color.BLACK);
-		g.setColor(this.tsdb.getColor(block.tileset));
-		g.fillRect((x * colWidth) + (colWidth / 3), (y * rowWidth) + (rowWidth / 3), colWidth / 2, rowWidth / 2);
+
+		g.setColor(this.tsdb.getColor(block.tileCollection));
+		int tileWidth = colWidth / 2;
+		int tileHeight = rowWidth / 2;
+		g.fillRect((x * colWidth) + (colWidth / 3), (y * rowWidth) + (rowWidth / 3), tileWidth, tileHeight);
+		g.fillRect(((x + 1) * colWidth) + (colWidth / 3), (y * rowWidth) + (rowWidth / 3), tileWidth, tileHeight);
+		g.fillRect((x * colWidth) + (colWidth / 3), ((y + 1) * rowWidth) + (rowWidth / 3), tileWidth, tileHeight);
+		g.fillRect(((x + 1) * colWidth) + (colWidth / 3), ((y + 1) * rowWidth) + (rowWidth / 3), tileWidth, tileHeight);
+
 		g.setColor(Color.BLACK);
-		g.drawString(String.format("%1$x", block.blockAddress), (x * colWidth), (y * rowWidth) + (14));
-		g.drawString(String.format("%1$x", block.tileset), (x * colWidth), (y * rowWidth) + 25);
+		g.drawString(String.format("%1$x", block.blockDefinitionAddress), (x * colWidth), (y * rowWidth) + (14));
+		g.drawString(String.format("%1$x", block.tileCollection), (x * colWidth), (y * rowWidth) + 25);
 	}
 
 	@Override

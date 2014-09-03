@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 import vbagamedebugger.games.pokemon.red.GameState;
 
@@ -27,6 +28,14 @@ public class Main {
 	private static final Args args = new Args();
 
 	private static int lastPromptedInt = 0;
+
+	static {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
 		new JCommander(Main.args, null, args);

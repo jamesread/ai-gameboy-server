@@ -1,13 +1,13 @@
 package vbagamedebugger.games.pokemon;
 
 public class Block {
-	public int tileset;
-	public int blockAddress;
+	public int tileCollection;
+	public int blockDefinitionAddress;
 
 	public Tile tl, tr, bl, br;
 
-	public Block(int tileset, int blockAddress) {
-		this.tileset = tileset;
-		this.blockAddress = blockAddress;
+	public Block(int tileset, int blockDefinitionAddress) {
+		this.tileCollection = tileset;
+		this.blockDefinitionAddress = blockDefinitionAddress;
 	}
 }

@@ -1,13 +1,13 @@
 package vbagamedebugger.games.pokemon;
 
-import vbagamedebugger.TilesetBitmap;
+import vbagamedebugger.TileBitmap;
 
 public class TilesetLoader {
 	public TilesetLoader() {
 	}
 
-	public TilesetBitmap load() {
-		TilesetBitmap bitmap = new TilesetBitmap();
+	public TileBitmap load() {
+		TileBitmap bitmap = new TileBitmap();
 
 		for (int i = 0; i < 80; i++) {
 			bitmap.renderTile(0x9000 + (i * 0xf));

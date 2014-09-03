@@ -6,10 +6,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class WindowDebug extends JFrame {
 	private final JButton btnMemSnapshot = new JButton("snapshot");
@@ -21,7 +26,12 @@ public class WindowDebug extends JFrame {
 
 	private final JButton btnExit = new JButton("Exit");
 
+	private final JButton btnMap = new JButton("Map");
+
 	private final JButton btnMemCmp = new JButton("cmp");
+	private final JButton btnMemDump = new JButton("dmp to file");
+
+	private final JPanel panMemoryControls = new JPanel();
 
 	public WindowDebug() {
 		this.pack();
@@ -34,9 +44,14 @@ public class WindowDebug extends JFrame {
 	private void setupComponents() {
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 1, 1, GridBagConstraints.NORTH, 1, new Insets(6, 6, 6, 6), 0, 0);
-		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = 1;
 
-		this.add(this.btnMemSnapshot, gbc);
+		this.panMemoryControls.setBorder(BorderFactory.createTitledBorder("Memory"));
+
+		this.panMemoryControls.add(this.btnMemSnapshot);
 		this.btnMemSnapshot.addActionListener(new ActionListener() {
 
 			@Override
@@ -45,8 +60,7 @@ public class WindowDebug extends JFrame {
 			}
 		});
 
-		gbc.gridx++;
-		this.add(this.btnMemCmp, gbc);
+		this.panMemoryControls.add(this.btnMemCmp);
 		this.btnMemCmp.addActionListener(new ActionListener() {
 
 			@Override
@@ -54,6 +68,32 @@ public class WindowDebug extends JFrame {
 				WindowDebug.this.gbac.memCmp();
 			}
 		});
+
+		this.btnMemDump.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int dump[] = WindowDebug.this.gbac.memDump();
+
+				try {
+					File f = new File("mem.dmp");
+					FileWriter fw = new FileWriter(f);
+
+					for (int bite : dump) {
+						fw.write(bite);
+					}
+
+					fw.close();
+
+					JOptionPane.showMessageDialog(null, "dumped to file: " + f.getAbsolutePath());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		this.panMemoryControls.add(this.btnMemDump);
+
+		this.add(this.panMemoryControls, gbc);
 
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.gridx = 0;
@@ -106,14 +146,26 @@ public class WindowDebug extends JFrame {
 		this.btnShowTileset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new WindowTilesetGraphics(new TilesetBitmap());
+				new WindowTilesetGraphics(new TileBitmap());
 			}
 		});
 		this.add(this.btnShowTileset, gbc);
 
 		gbc.gridy++;
+		this.btnMap.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new WindowMapCol();
+			}
+		});
+		this.add(this.btnMap, gbc);
+
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.weightx = 1;
+		gbc.gridy++;
 		gbc.gridwidth = 1;
-		this.add(new XButton("up", new AbstractAction() {
+		this.add(new XButton("\u25b2", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -123,7 +175,7 @@ public class WindowDebug extends JFrame {
 		}), gbc);
 
 		gbc.gridx++;
-		this.add(new XButton("down", new AbstractAction() {
+		this.add(new XButton("\u25bc", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Main.press(Buttons.DOWN);
@@ -131,7 +183,7 @@ public class WindowDebug extends JFrame {
 		}), gbc);
 
 		gbc.gridx++;
-		this.add(new XButton("left", new AbstractAction() {
+		this.add(new XButton("\u25c0", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Main.press(Buttons.LEFT);
@@ -139,7 +191,7 @@ public class WindowDebug extends JFrame {
 		}), gbc);
 
 		gbc.gridx++;
-		this.add(new XButton("right", new AbstractAction() {
+		this.add(new XButton("\u25b6", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Main.press(Buttons.RIGHT);
@@ -147,6 +199,7 @@ public class WindowDebug extends JFrame {
 		}), gbc);
 
 		gbc.gridx = 0;
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 
 		gbc.gridy++;
@@ -170,6 +223,7 @@ public class WindowDebug extends JFrame {
 			Main.shutdown();
 		} else {
 			this.pack();
+			this.setLocationRelativeTo(null);
 		}
 	}
 

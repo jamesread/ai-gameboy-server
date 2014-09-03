@@ -3,9 +3,11 @@ package vbagamedebugger;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -25,6 +27,8 @@ public class WindowWatch extends JFrame {
 	private final int start;
 	private final int stop;
 	private final JSlider sliWidth = new JSlider(1, 64);
+
+	private final JTextArea txtOffsets = new JTextArea();
 
 	private final JButton btnRefresh = new JButton("Refresh");
 	private final JCheckBox chkAuto = new JCheckBox("Auto?", true);
@@ -64,7 +68,7 @@ public class WindowWatch extends JFrame {
 	}
 
 	private void setupLayout() {
-		this.setBounds(100, 100, 640, 640);
+		this.setBounds(100, 100, 680, 640);
 		this.setLocationRelativeTo(null);
 
 		this.setLayout(new GridBagLayout());
@@ -110,6 +114,7 @@ public class WindowWatch extends JFrame {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				WindowWatch.this.updateWidth();
+				WindowWatch.this.update();
 			}
 		});
 
@@ -136,18 +141,27 @@ public class WindowWatch extends JFrame {
 		gbc.gridx++;
 		this.add(this.chkDecodePoke, gbc);
 
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.gridy++;
 		gbc.gridx = 0;
+		gbc.gridy++;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(6, 6, 0, 6);
+		gbc.weighty = 0;
+		this.txtOffsets.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
+		this.txtOffsets.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+		this.add(this.txtOffsets, gbc);
+
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.insets = new Insets(0, 6, 6, 6);
+		gbc.gridy++;
 		this.txtWatch.setEditable(false);
 		this.txtWatch.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 12));
 		this.add(new JScrollPane(this.txtWatch), gbc);
 
 		this.setTitle("watch " + this.start + " to " + this.stop);
 
+		this.sliWidth.setValue(16);
 		this.updateWidth();
 		this.update();
 
@@ -240,6 +254,22 @@ public class WindowWatch extends JFrame {
 		} else {
 			this.chkDecodePoke.setEnabled(false);
 		}
+
+		StringBuilder offsetMarks = new StringBuilder();
+		if (this.sliWidth.getValue() == 16) {
+
+			for (int i = (this.start % 0x10); i < (this.sliWidth.getValue() + (this.start % 0x10)); i++) {
+				offsetMarks.append(String.format(" ___%x", ((i > 0xf) ? i - 0x10 : i)));
+			}
+		} else if (this.sliWidth.getValue() == 1) {
+			offsetMarks.append(" offsets dont work with width = 1");
+		} else {
+			for (int i = 0; i < this.sliWidth.getValue(); i++) {
+				offsetMarks.append(String.format(" +%d  ", i));
+			}
+		}
+
+		this.txtOffsets.setText("          " + offsetMarks);
 	}
 
 	private void updateWidth(int w) {
