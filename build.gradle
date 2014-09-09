@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName = 'vbagamedebugger.Main'
 
 repositories {
 	mavenCentral();
@@ -11,3 +14,11 @@ dependencies {
 	compile 'junit:junit:4.9'
 }
 
+task uberjar(type: Jar) {
+	from files (sourceSets.main.output.classesDir)
+	from configurations.runtime.asFileTree.files.collect {zipTree(it) }
+
+	manifest {
+		attributes 'Main-Class': mainClassName
+	}
+}
