@@ -1,2 +1,6 @@
-target/*
 *.dmp
+**/*.swp
+.gradle
+.settings
+build
+target
