@@ -22,8 +22,6 @@ public class WindowDebug extends JFrame {
 
 	private final JButton btnShowTileset = new JButton("Tileset");
 
-	private final GbaController gbac = new GbaController();
-
 	private final JButton btnExit = new JButton("Exit");
 
 	private final JButton btnMap = new JButton("Map");
@@ -32,6 +30,7 @@ public class WindowDebug extends JFrame {
 	private final JButton btnMemDump = new JButton("dmp to file");
 
 	private final JPanel panMemoryControls = new JPanel();
+	private final JPanel panControls = new JPanel();
 
 	public WindowDebug() {
 		this.pack();
@@ -56,7 +55,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowDebug.this.gbac.memSnapshot();
+				Main.gbac.memSnapshot();
 			}
 		});
 
@@ -65,7 +64,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				WindowDebug.this.gbac.memCmp();
+				Main.gbac.memCmp();
 			}
 		});
 
@@ -73,7 +72,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int dump[] = WindowDebug.this.gbac.memDump();
+				int dump[] = Main.gbac.memDump();
 
 				try {
 					File f = new File("mem.dmp");
@@ -156,7 +155,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				new WindowMapCol();
+				new WindowMapView();
 			}
 		});
 		this.add(this.btnMap, gbc);
@@ -165,36 +164,37 @@ public class WindowDebug extends JFrame {
 		gbc.weightx = 1;
 		gbc.gridy++;
 		gbc.gridwidth = 1;
-		this.add(new XButton("\u25b2", new AbstractAction() {
+
+		this.panControls.setBorder(BorderFactory.createTitledBorder("Controls"));
+		this.add(this.panControls);
+
+		this.panControls.add(new XButton("\u25b2", new AbstractAction() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.press(Buttons.UP);
+				GbaController.press(Buttons.UP);
 			}
 
 		}), gbc);
 
-		gbc.gridx++;
-		this.add(new XButton("\u25bc", new AbstractAction() {
+		this.panControls.add(new XButton("\u25bc", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.press(Buttons.DOWN);
+				GbaController.press(Buttons.DOWN);
 			}
 		}), gbc);
 
-		gbc.gridx++;
-		this.add(new XButton("\u25c0", new AbstractAction() {
+		this.panControls.add(new XButton("\u25c0", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.press(Buttons.LEFT);
+				GbaController.press(Buttons.LEFT);
 			}
 		}), gbc);
 
-		gbc.gridx++;
-		this.add(new XButton("\u25b6", new AbstractAction() {
+		this.panControls.add(new XButton("\u25b6", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.press(Buttons.RIGHT);
+				GbaController.press(Buttons.RIGHT);
 			}
 		}), gbc);
 

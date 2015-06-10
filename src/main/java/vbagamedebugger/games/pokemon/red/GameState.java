@@ -5,7 +5,6 @@ import java.util.Vector;
 import vbagamedebugger.GbaController;
 import vbagamedebugger.Main;
 import vbagamedebugger.Util;
-import vbagamedebugger.games.pokemon.Block;
 import vbagamedebugger.games.pokemon.InventorySlot;
 import vbagamedebugger.games.pokemon.Pokemon;
 import vbagamedebugger.games.pokemon.State;
@@ -50,18 +49,11 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 
 	public int mapWidthBlocks = 0;
 
-	private Block[][] map;
-
 	private final Vector<Pokemon> encounterablePokemon = new Vector<Pokemon>();
 
 	public int mapHeightCoords = 0;
 
 	public int mapWidthCoords = 0;
-
-	@Override
-	public Block[][] getMap() {
-		return this.map;
-	}
 
 	@Override
 	public State getState() {
@@ -71,6 +63,8 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 	@Override
 	public void run() {
 		try {
+			this.updateInit();
+
 			while (Main.run) {
 				this.update();
 				Util.sleep(200);
@@ -136,6 +130,12 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 		this.updateEncounterablePokemon();
 	}
 
+	private void updateBlockTileContents(int blockId) {
+		for (int baseAddress = 0x0; baseAddress < 0; baseAddress++) {
+			Main.gbac.readRom(baseAddress);
+		}
+	}
+
 	private void updateEncounterablePokemon() {
 		int baseAddress = 0xd888;
 
@@ -151,6 +151,10 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 
 			this.encounterablePokemon.add(new Pokemon(pokemon, level));
 		}
+	}
+
+	public void updateInit() {
+		this.updateBlockTileContents(1);
 	}
 
 	private void updateInventoryItems() {
@@ -171,22 +175,6 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 
 		this.mapHeightCoords = this.mapHeightBlocks * 2;
 		this.mapWidthCoords = this.mapWidthBlocks * 2;
-
-		this.map = new Block[this.mapHeightBlocks][this.mapWidthBlocks];
-
-		int base = 0xc6ea;
-		for (int y = 0; y < this.mapHeightBlocks; y++) {
-			base += 3;
-
-			for (int x = 0; x < this.mapWidthBlocks; x++) {
-				this.map[y][x] = new Block(Gb.readMemory(base), base);
-
-				base++;
-			}
-
-			base += 3;
-
-		}
 	}
 
 	private void updateOnScreenText() {

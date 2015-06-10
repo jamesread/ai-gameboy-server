@@ -8,6 +8,8 @@ import com.aurellem.gb.Gb;
 
 public class GbaController {
 
+	private static int keymask = 0;
+
 	private static int[] dumpBlock(int start, int fin) {
 		int[] dmp = new int[fin - start];
 		for (int currentAddress = start; currentAddress < fin; currentAddress++) {
@@ -50,18 +52,23 @@ public class GbaController {
 		return Gb.readMemory(address);
 	}
 
-	private int[] snapshot;
+	public static void press(Buttons... buttons) {
+		for (Buttons button : buttons) {
+			System.out.println("Button:" + button);
 
-	private void dumpImportantStringPrefixes() {
-		int baseAddress = 0x01823;
-		for (int i = 0; i < 100; i++) {
-			int currentAddress = baseAddress + i;
+			keymask |= button.mask;
+		}
 
-			int v = Gb.readMemory(currentAddress);
+		try {
+			Thread.sleep(1000);
+		} catch (Exception e) {
 
-			System.out.println(currentAddress + " = " + v);
 		}
 	}
+
+	private String romPath = "";
+
+	private int[] snapshot;
 
 	public void memCmp() {
 		int[] diff = new int[0xffff];
@@ -92,6 +99,44 @@ public class GbaController {
 
 	public void memSnapshot() {
 		this.snapshot = this.memDump();
+	}
 
+	public int readRom(int baseAddress) {
+		return 0;
+	}
+
+	public void startEmulator(final String romPath) {
+		this.romPath = romPath;
+
+		Thread t = new Thread() {
+			@Override
+			public void run() {
+				Gb.startEmulator(romPath);
+
+				System.out.println("Rom size: " + Gb.getROMSize());
+
+				Main.onEmulatorStarted();
+
+				while (Main.run) {
+					try {
+						if (keymask != 0) {
+							Gb.step(keymask);
+							Gb.step(keymask);
+							Gb.step(keymask);
+							Gb.step(keymask);
+
+							keymask = 0;
+
+							Gb.step(keymask);
+						} else {
+							Gb.step();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+		};
+		t.start();
 	}
 }

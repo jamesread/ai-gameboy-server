@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 public class TilesetDatabase {
 	private final HashMap<Integer, Color> tilesetColors = new HashMap<Integer, Color>();
+	public HashMap<Integer, Tileset> tilesets = new HashMap<Integer, Tileset>();
 
 	private int max;
 

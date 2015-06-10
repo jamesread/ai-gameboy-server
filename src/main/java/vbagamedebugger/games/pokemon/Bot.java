@@ -3,6 +3,7 @@ package vbagamedebugger.games.pokemon;
 import java.util.Vector;
 
 import vbagamedebugger.Buttons;
+import vbagamedebugger.GbaController;
 import vbagamedebugger.Main;
 
 public class Bot implements Runnable {
@@ -34,21 +35,21 @@ public class Bot implements Runnable {
 		switch (this.gs.getState()) {
 		case READING_SIGN:
 		case UNKNOWN_TEXT:
-			Main.press(Buttons.A);
+			GbaController.press(Buttons.A);
 			break;
 		case BATTLE_MAIN:
 			if (this.runFromWildPokemon) {
-				Main.press(Buttons.DOWN);
-				Main.press(Buttons.RIGHT);
+				GbaController.press(Buttons.DOWN);
+				GbaController.press(Buttons.RIGHT);
 			} else {
-				Main.press(Buttons.UP);
-				Main.press(Buttons.LEFT);
-				Main.press(Buttons.A);
+				GbaController.press(Buttons.UP);
+				GbaController.press(Buttons.LEFT);
+				GbaController.press(Buttons.A);
 			}
 			break;
 		case CHOOSE_POKEMON:
-			Main.press(Buttons.B);
-			Main.press(Buttons.LEFT);
+			GbaController.press(Buttons.B);
+			GbaController.press(Buttons.LEFT);
 			break;
 		case MOVE_SELECT:
 			int rndMove = Main.rnd.nextInt(4);
@@ -56,25 +57,25 @@ public class Bot implements Runnable {
 			System.out.println("Selectin move: " + rndMove);
 
 			for (int i = 0; i < rndMove; i++) {
-				Main.press(Buttons.DOWN);
+				GbaController.press(Buttons.DOWN);
 				this.sleep();
 			}
 
-			Main.press(Buttons.A);
+			GbaController.press(Buttons.A);
 
 			break;
 		case WILD_APPEARED:
-			Main.press(Buttons.A);
+			GbaController.press(Buttons.A);
 			break;
 		case FREEROAM:
-			Main.press(Buttons.randomDirection());
+			GbaController.press(Buttons.randomDirection());
 			break;
 		case ACK_EXPERIENCE:
-			Main.press(Buttons.A);
+			GbaController.press(Buttons.A);
 
 			break;
 		default:
-			Main.press(Buttons.random());
+			GbaController.press(Buttons.random());
 		}
 	}
 

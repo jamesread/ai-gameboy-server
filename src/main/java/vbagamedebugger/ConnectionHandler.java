@@ -29,16 +29,16 @@ public class ConnectionHandler implements Runnable {
 		try {
 			switch (scanner.next("\\w+")) {
 			case "u":
-				Main.press(Buttons.UP);
+				GbaController.press(Buttons.UP);
 				break;
 			case "d":
-				Main.press(Buttons.DOWN);
+				GbaController.press(Buttons.DOWN);
 				break;
 			case "l":
-				Main.press(Buttons.LEFT);
+				GbaController.press(Buttons.LEFT);
 				break;
 			case "r":
-				Main.press(Buttons.RIGHT);
+				GbaController.press(Buttons.RIGHT);
 				break;
 			case "quit":
 				Main.shutdown();

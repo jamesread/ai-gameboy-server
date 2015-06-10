@@ -29,9 +29,6 @@ public class TileBitmap extends BufferedImage {
 
 	int tileCount = 0;
 
-	private int col = -1;
-	private int row = 0;
-
 	public TileBitmap() {
 		super(16 * 10, 5 * 10, BufferedImage.TYPE_INT_RGB);
 
@@ -42,32 +39,20 @@ public class TileBitmap extends BufferedImage {
 	}
 
 	public void renderTile(final int base) {
-		this.col++;
-
-		if (this.col >= 16) {
-			this.col = 0;
-			this.row++;
-		}
-
-		int x = this.col * 9;
-		int y = this.row * 9;
-
 		for (int i = 0; i < 8; i++) {
 			int b1 = Gb.readMemory(base + (i * 2) + 0 + this.tileCount);
 			int b2 = Gb.readMemory(base + (i * 2) + 1 + this.tileCount);
 
-			System.out.println(String.format("reading 2 bytes starting from: %x = %x %x  %d:%d", base + ((i * 2) + this.tileCount), b1, b2, x, y));
+			System.out.println(String.format("reading 2 bytes starting from: %x = %x %x  %d:%d", base + ((i * 2) + this.tileCount), b1, b2, 0, 0));
 
-			this.setRGB(x + 7, y, TileBitmap.gbcol(0, b1, b2));
-			this.setRGB(x + 6, y, TileBitmap.gbcol(1, b1, b2));
-			this.setRGB(x + 5, y, TileBitmap.gbcol(2, b1, b2));
-			this.setRGB(x + 4, y, TileBitmap.gbcol(3, b1, b2));
-			this.setRGB(x + 3, y, TileBitmap.gbcol(4, b1, b2));
-			this.setRGB(x + 2, y, TileBitmap.gbcol(5, b1, b2));
-			this.setRGB(x + 1, y, TileBitmap.gbcol(6, b1, b2));
-			this.setRGB(x + 0, y, TileBitmap.gbcol(7, b1, b2));
-
-			y++;
+			this.setRGB(7, 0, TileBitmap.gbcol(0, b1, b2));
+			this.setRGB(6, 0, TileBitmap.gbcol(1, b1, b2));
+			this.setRGB(5, 0, TileBitmap.gbcol(2, b1, b2));
+			this.setRGB(4, 0, TileBitmap.gbcol(3, b1, b2));
+			this.setRGB(3, 0, TileBitmap.gbcol(4, b1, b2));
+			this.setRGB(2, 0, TileBitmap.gbcol(5, b1, b2));
+			this.setRGB(1, 0, TileBitmap.gbcol(6, b1, b2));
+			this.setRGB(0, 0, TileBitmap.gbcol(7, b1, b2));
 		}
 
 		System.out.println("tile rendered: " + this.tileCount);

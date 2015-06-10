@@ -16,8 +16,6 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import vbagamedebugger.games.pokemon.TilesetLoader;
-
 public class WindowTilesetGraphics extends JFrame {
 	private BufferedImage sourceImage;
 
@@ -79,7 +77,9 @@ public class WindowTilesetGraphics extends JFrame {
 
 	private void updateTileset() {
 		System.out.println("reloading tileset and repainting");
-		this.sourceImage = new TilesetLoader().load();
-		this.repaint();
+
+		this.sourceImage = null;
+		// this.repaint();
+		throw new RuntimeException("lol");
 	}
 }

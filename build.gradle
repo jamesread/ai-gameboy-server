@@ -12,6 +12,7 @@ dependencies {
 	compile files('lib/tritonus_aos-0.3.6.jar')
 	compile 'com.beust:jcommander:1.30' 
 	compile 'junit:junit:4.9'
+	compile 'com.google.code.gson:gson:2.3.1'
 }
 
 task uberjar(type: Jar) {

@@ -17,8 +17,6 @@ public class Main {
 
 	private static final Vector<WindowWatch> watchDialogs = new Vector<WindowWatch>();
 
-	private static int keymask = 0;
-
 	public static boolean run = true;
 
 	public static Random rnd = new Random();
@@ -28,6 +26,8 @@ public class Main {
 	private static final Args args = new Args();
 
 	private static int lastPromptedInt = 0;
+
+	public final static GbaController gbac = new GbaController();
 
 	static {
 		try {
@@ -41,45 +41,19 @@ public class Main {
 		new JCommander(Main.args, null, args);
 
 		System.load(System.getProperty("user.dir") + "/lib/libvba.so");
-		Thread t = new Thread() {
-			@Override
-			public void run() {
-				Gb.startEmulator(Main.args.romPath);
-
-				System.out.println("Rom size: " + Gb.getROMSize());
-
-				Main.onEmulatorStarted();
-
-				while (Main.run) {
-					try {
-						if (Main.keymask != 0) {
-							Gb.step(Main.keymask);
-							Gb.step(Main.keymask);
-							Gb.step(Main.keymask);
-							Gb.step(Main.keymask);
-
-							Main.keymask = 0;
-
-							Gb.step(Main.keymask);
-						} else {
-							Gb.step();
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			};
-		};
-		t.start();
 
 		Main.wndDebug.setVisible(true);
+
+		if (Main.args.startBot) {
+			gbac.startEmulator(Main.args.romPath);
+		}
 	}
 
 	public static void newWatchDialog(int start, int stop) {
 		Main.watchDialogs.add(new WindowWatch(start, stop));
 	}
 
-	private static void onEmulatorStarted() {
+	static void onEmulatorStarted() {
 		new Thread(Main.gameState, "gameStateupdater").start();
 
 		if (Main.args.listener) {
@@ -87,25 +61,11 @@ public class Main {
 		}
 
 		if (Main.args.startMapCol) {
-			new WindowMapCol();
+			new WindowMapView();
 		}
 
 		if (Main.args.startBot) {
 			new WindowBotWatcher();
-		}
-	}
-
-	public static void press(Buttons... buttons) {
-		for (Buttons button : buttons) {
-			System.out.println("Button:" + button);
-
-			Main.keymask |= button.mask;
-		}
-
-		try {
-			Thread.sleep(1000);
-		} catch (Exception e) {
-
 		}
 	}
 

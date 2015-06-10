@@ -5,10 +5,10 @@ import java.util.Vector;
 import vbagamedebugger.GbaController;
 import vbagamedebugger.Main;
 import vbagamedebugger.Util;
-import vbagamedebugger.games.pokemon.Tile;
 import vbagamedebugger.games.pokemon.InventorySlot;
 import vbagamedebugger.games.pokemon.Pokemon;
 import vbagamedebugger.games.pokemon.State;
+import vbagamedebugger.games.pokemon.Tile;
 
 import com.aurellem.gb.Gb;
 
@@ -162,19 +162,6 @@ public class GameState implements Runnable {
 		this.mapWidth = Gb.readMemory(0xd368);
 		this.mapWidthCoords = this.mapWidth * 2;
 
-		this.map = new Tile[this.mapHeight][this.mapWidth];
-
-		int base = 0xc71b;
-		for (int y = 0; y < this.mapHeight; y++) {
-			for (int x = 0; x < this.mapWidth; x++) {
-				this.map[y][x] = new Tile(Gb.readMemory(base), base, false);
-
-				base++;
-			}
-
-			base += 6;
-
-		}
 	}
 
 	private void updateOnScreenText() {
