@@ -1,10 +1,12 @@
 package pokemonRed;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 import javax.swing.JDialog;
 
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,6 +38,8 @@ public class TestLoadWorld {
 
 	@BeforeClass
 	public static void setup() throws FileNotFoundException {
+		Assume.assumeTrue(new File("rom.gb").exists());
+
 		TestLoadWorld.reader = new RomReader("rom.gb");
 		world = new World(TestLoadWorld.reader);
 	}
