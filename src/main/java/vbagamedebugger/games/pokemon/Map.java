@@ -1,8 +1,10 @@
 package vbagamedebugger.games.pokemon;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
+import vbagamedebugger.games.pokemon.World.Direction;
 import vbagamedebugger.games.pokemon.red.pathFinder.Cell;
 
 public class Map {
@@ -10,11 +12,17 @@ public class Map {
 	private final Vector<Block> contents;
 	private final int w, h;
 	public int tileset;
+	private List<Direction> connections = new Vector<Direction>(); 
 
 	public Map(int w, int h) {
 		this.w = w;
 		this.h = h;
 		this.contents = new Vector<Block>(w * h);
+	}
+
+	public Map(int w, int h, Vector<Direction> connections) {
+		this(w, h);
+		this.connections = connections; 
 	}
 
 	private int coordToIndex(int x, int y) {
@@ -27,6 +35,10 @@ public class Map {
 				this.contents.add(new Block(blockId, x, y));
 			}
 		}
+	}
+	 
+	public boolean hasConnection(Direction d) {
+		return connections.contains(d); 
 	}
 
 	public Block getBlock(int x, int y) {
@@ -59,6 +71,10 @@ public class Map {
 	public int getWidth() {
 		return this.w;
 	}
+	
+	public void setBlock(Block block) {
+		this.setBlock(block.getX(), block.getY(), block); 
+	} 
 
 	public void setBlock(int x, int y, Block block) {
 		this.contents.set(this.coordToIndex(x, y), block);

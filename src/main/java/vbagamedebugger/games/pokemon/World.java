@@ -62,13 +62,14 @@ public class World {
 		}
 
 		addr += 84;
+		addr -= 9; 
 
 		System.out.println(String.format("finished reading object, I'm at: %x", addr));
 
-		Map map = new Map(w.value * 2, h.value * 2);
+		Map map = new Map(w.value * 2, h.value * 2, connections);
 		map.tileset = tileset.value;
 		map.fillWithBlock(0);
-
+ 
 		System.out.println(map);
 
 		this.reader.seek(addr);

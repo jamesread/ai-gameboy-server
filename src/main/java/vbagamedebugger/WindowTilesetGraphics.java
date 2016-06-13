@@ -50,7 +50,7 @@ public class WindowTilesetGraphics extends JFrame {
 		final BufferedImage renderImage = new BufferedImage(WindowTilesetGraphics.this.sourceImage.getWidth() * this.scaleFactor, WindowTilesetGraphics.this.sourceImage.getHeight() * this.scaleFactor, BufferedImage.TYPE_INT_RGB);
 
 		JComponent renderer = new JComponent() {
-
+ 
 			@Override
 			public void paint(Graphics g) {
 				super.paint(g);
@@ -73,13 +73,12 @@ public class WindowTilesetGraphics extends JFrame {
 		});
 
 		this.add(renderer, BorderLayout.CENTER);
-	}
-
+	} 
+ 
 	private void updateTileset() {
 		System.out.println("reloading tileset and repainting");
 
-		this.sourceImage = null;
-		// this.repaint();
-		throw new RuntimeException("lol");
+		//this.sourceImage = null;
+		this.repaint();
 	}
 }

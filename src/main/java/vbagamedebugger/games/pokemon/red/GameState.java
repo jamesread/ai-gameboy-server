@@ -8,6 +8,7 @@ import vbagamedebugger.Util;
 import vbagamedebugger.games.pokemon.InventorySlot;
 import vbagamedebugger.games.pokemon.Pokemon;
 import vbagamedebugger.games.pokemon.State;
+import vbagamedebugger.games.pokemon.World;
 
 import com.aurellem.gb.Gb;
 
@@ -54,6 +55,7 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 	public int mapHeightCoords = 0;
 
 	public int mapWidthCoords = 0;
+	
 
 	@Override
 	public State getState() {
@@ -96,8 +98,9 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.GameSt
 		ret += "Coords: " + this.cordX + ":" + this.cordY + "\n";
 		ret += "Last opponent name: " + this.lastOpponentName + "\n";
 		ret += "Game time: " + this.hours + ":" + this.minutes + ":" + this.seconds + ":" + this.frames + "\n";
-		ret += "Map: " + this.mapWidthBlocks + ":" + this.mapHeightBlocks + " (blocks), " + this.mapWidthCoords + ":" + this.mapHeightCoords + " (coords), tileset: " + this.mapTileset + "\n";
 		ret += "Money: " + this.money + "\n";
+		ret += "Map: " + this.mapWidthBlocks + ":" + this.mapHeightBlocks + " (blocks), " + this.mapWidthCoords + ":" + this.mapHeightCoords + " (coords), tileset: " + this.mapTileset + "\n";
+
 		return ret;
 	}
 

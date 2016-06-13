@@ -15,10 +15,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JList;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
+import vbagamedebugger.DebugPresetModel.DebugPreset;
 
 public class WindowDebug extends JFrame {
 	private final JButton btnMemSnapshot = new JButton("snapshot");
-	private final JButton btnNewWatch = new JButton("Watch...");
+	private final JButton btnNewWatch = new JButton("Custom watch...");
 
 	private final JButton btnShowTileset = new JButton("Tileset");
 
@@ -27,10 +32,13 @@ public class WindowDebug extends JFrame {
 	private final JButton btnMap = new JButton("Map");
 
 	private final JButton btnMemCmp = new JButton("cmp");
-	private final JButton btnMemDump = new JButton("dmp to file");
+	private final JButton btnMemDumpFull = new JButton("dmp full");
+	private final JButton btnMemDumpDiff = new JButton("dmp diff");
 
 	private final JPanel panMemoryControls = new JPanel();
 	private final JPanel panControls = new JPanel();
+
+	private final JList<DebugPresetModel> lstDebugPresets = new JList<DebugPresetModel>(new DebugPresetModel());
 
 	public WindowDebug() {
 		this.pack();
@@ -68,7 +76,7 @@ public class WindowDebug extends JFrame {
 			}
 		});
 
-		this.btnMemDump.addActionListener(new ActionListener() {
+		this.btnMemDumpFull.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -90,48 +98,65 @@ public class WindowDebug extends JFrame {
 				}
 			}
 		});
-		this.panMemoryControls.add(this.btnMemDump);
+		this.panMemoryControls.add(this.btnMemDumpFull);
+		
+		this.btnMemDumpDiff.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int dump[] = Main.gbac.getMemCmp();
+
+				try {
+					File f = new File("mem.dmp");
+					FileWriter fw = new FileWriter(f);
+
+					for (int bite : dump) {
+						fw.write(bite);
+					}
+
+					fw.close();
+
+					JOptionPane.showMessageDialog(null, "dumped to file: " + f.getAbsolutePath());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} 
+		});
+		this.panMemoryControls.add(this.btnMemDumpDiff);
 
 		this.add(this.panMemoryControls, gbc);
 
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		gbc.gridx = 0;
 		gbc.gridy++;
+		this.add(new JLabel("Watches"), gbc);
+		
+		gbc.gridy++;
+		this.add(new JScrollPane(this.lstDebugPresets), gbc);
+		
+		gbc.gridwidth = 1; 
+		gbc.gridy++;
+		add(new XButton("Load preset", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				int selected = lstDebugPresets.getSelectedIndex();
+				DebugPreset preset = ((DebugPresetModel)lstDebugPresets.getModel()).get(selected);
+				
+				new WindowWatch(preset.offset, preset.end, preset.name); 
+			}  
+		}), gbc); 
+		 
+		gbc.gridx++;
 		this.add(this.btnNewWatch, gbc);
 		this.btnNewWatch.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Main.newWatchDialog(Main.promptInt("start?"), Main.promptInt("stop?"));
 			}
-		});
-
-		gbc.gridy++;
-		this.add(new XButton("Watch prefix strings", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new WindowWatch(0x1823, 0x184a, "prefix strings");
-			}
-		}), gbc);
-
-		gbc.gridy++;
-		this.add(new XButton("Watch for items", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new WindowWatch(0x45b7, 0x491e, "Watch for items");
-			}
-		}), gbc);
-
-		gbc.gridy++;
-		this.add(new XButton("Watch text", new AbstractAction() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new WindowWatch(0x9dc1, 0x9dc1 + 90, "Watch text");
-			}
-		}), gbc);
-
+		}); 
+		
+		gbc.gridwidth = GridBagConstraints.REMAINDER; 
+		gbc.gridx = 0; 
 		gbc.gridy++;
 		this.add(new XButton("New Bot", new AbstractAction() {
 

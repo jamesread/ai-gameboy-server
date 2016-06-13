@@ -13,6 +13,7 @@ import vbagamedebugger.RomReader;
 import vbagamedebugger.games.pokemon.Map;
 import vbagamedebugger.games.pokemon.TilesetLoader;
 import vbagamedebugger.games.pokemon.World;
+import vbagamedebugger.games.pokemon.World.Direction;
 
 public class TestLoadWorld {
 	private static RomReader reader;
@@ -48,12 +49,16 @@ public class TestLoadWorld {
 	}
 
 	@Test
-	public void testLoadPalletTown() throws Exception {
+	public void testLoadPalletTown() throws Exception { 
 		Map palletTown = world.loadMap(0x182a1);
 
 		Assert.assertEquals(20, palletTown.getWidth());
-		Assert.assertEquals(18, palletTown.getHeight());
-
+		Assert.assertEquals(18, palletTown.getHeight());  
+		Assert.assertFalse(palletTown.hasConnection(Direction.EAST));
+		Assert.assertFalse(palletTown.hasConnection(Direction.SOUTH));
+		Assert.assertFalse(palletTown.hasConnection(Direction.WEST));
+		Assert.assertTrue(palletTown.hasConnection(Direction.NORTH));
+		
 		Assert.assertNotNull(palletTown);
 	}
 

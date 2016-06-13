@@ -1,7 +1,10 @@
 package vbagamedebugger;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
 
+import vbagamedebugger.RomReader.GbByte;
 import vbagamedebugger.games.pokemon.PokeCharset;
 
 import com.aurellem.gb.Gb;
@@ -71,8 +74,12 @@ public class GbaController {
 	private int[] snapshot;
 
 	public void memCmp() {
+		new WindowWatch(getMemCmp());
+	}
+	
+	public int[] getMemCmp() {
 		int[] diff = new int[0xffff];
-		Arrays.fill(diff, -1);
+		Arrays.fill(diff, 0);
 
 		int[] current = this.memDump();
 
@@ -82,7 +89,7 @@ public class GbaController {
 			}
 		}
 
-		new WindowWatch(diff);
+		return diff;
 	}
 
 	public int[] memDump() {
@@ -101,12 +108,21 @@ public class GbaController {
 		this.snapshot = this.memDump();
 	}
 
-	public int readRom(int baseAddress) {
-		return 0;
+	public GbByte readRom(int baseAddress) {
+		try {   
+			return reader.readGbByte(baseAddress);
+		} catch (IOException e ){
+			e.printStackTrace();
+			return new GbByte(0);
+		}
 	}
+	  
+	private RomReader reader; 
 
-	public void startEmulator(final String romPath) {
+	public void startEmulator(final String romPath) throws FileNotFoundException {
 		this.romPath = romPath;
+		
+		reader = new RomReader(this.romPath); 
 
 		Thread t = new Thread() {
 			@Override

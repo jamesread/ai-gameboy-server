@@ -92,7 +92,7 @@ public class ComponentMap extends Component {
 		}
 
 		((Graphics2D) g).setStroke(new BasicStroke(3));
-
+		
 		for (Block block : this.map.getBlocks()) {
 			this.drawBlock(g, block.getX(), block.getY(), colWidth, rowWidth, block);
 		}

@@ -55,7 +55,7 @@ public class Main {
 
 	static void onEmulatorStarted() {
 		new Thread(Main.gameState, "gameStateupdater").start();
-
+		
 		if (Main.args.listener) {
 			new Thread(new TcpControlListener(), "tcpControlListener").start();
 		}

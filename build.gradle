@@ -23,3 +23,7 @@ task uberjar(type: Jar) {
 		attributes 'Main-Class': mainClassName
 	}
 }
+
+clean {
+	delete "./*.log"
+}
