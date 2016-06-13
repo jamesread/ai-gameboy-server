@@ -12,7 +12,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/gb-bindings.jar"/>
-	<classpathentry kind="lib" path="lib/tritonus_aos-0.3.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
