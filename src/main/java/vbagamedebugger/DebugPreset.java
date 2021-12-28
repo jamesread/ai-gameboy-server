@@ -25,6 +25,7 @@ class DebugPresetModel implements ListModel {
  
 	public DebugPresetModel() {
 		File debugPresetsDir = new File("debugPresets/rom/");
+		debugPresetsDir.mkdirs(); 
 
 		for (File f : debugPresetsDir.listFiles()) {
 			if (f.isHidden()) {

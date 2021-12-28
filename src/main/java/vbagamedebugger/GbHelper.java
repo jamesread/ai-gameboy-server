@@ -9,7 +9,7 @@ import vbagamedebugger.games.pokemon.PokeCharset;
 
 import com.aurellem.gb.Gb;
 
-public class GbaController {
+public class GbHelper {
 
 	private static int keymask = 0;
 
@@ -154,5 +154,9 @@ public class GbaController {
 			};
 		};
 		t.start();
+	}
+ 
+	public static boolean readBoolean(int addr) {
+		return Gb.readMemory(addr) == 1;
 	}
 }

@@ -27,7 +27,7 @@ public class Main {
 
 	private static int lastPromptedInt = 0;
 
-	public final static GbaController gbac = new GbaController();
+	public final static GbHelper gbac = new GbHelper();
 
 	static {
 		try {

@@ -197,7 +197,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbaController.press(Buttons.UP);
+				GbHelper.press(Buttons.UP);
 			}
 
 		}), gbc);
@@ -205,21 +205,21 @@ public class WindowDebug extends JFrame {
 		this.panControls.add(new XButton("\u25bc", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbaController.press(Buttons.DOWN);
+				GbHelper.press(Buttons.DOWN);
 			}
 		}), gbc);
 
 		this.panControls.add(new XButton("\u25c0", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbaController.press(Buttons.LEFT);
+				GbHelper.press(Buttons.LEFT);
 			}
 		}), gbc);
 
 		this.panControls.add(new XButton("\u25b6", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbaController.press(Buttons.RIGHT);
+				GbHelper.press(Buttons.RIGHT);
 			}
 		}), gbc);
 
