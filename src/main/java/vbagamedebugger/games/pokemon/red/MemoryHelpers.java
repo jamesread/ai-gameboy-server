@@ -40,4 +40,8 @@ public class MemoryHelpers {
 
 	public static final int MAP_HEIGHT_BLOCKS = 0xd368;
 	public static final int MAP_WIDTH_BLOCKS = 0xd369;
+
+	// https://bulbapedia.bulbagarden.net/wiki/User:Tiddlywinks/Map_header_data_structure_in_Generation_I
+	public static final int ROM_MAP_PALLET_TOWN = 0x182A1;
+	public static final int ROM_MAP_CELADON_CITY = 0x18000;
 }

@@ -30,7 +30,7 @@ public class TilesetLoader {
 			GbPointer pointerToTileGfx = this.reader.readGbPointer();
 			GbPointer pointerToCollisionData = this.reader.readGbPointer();
 
-			this.reader.skip(5);
+			this.reader.skipBytes(5);
 
 			Tileset t = new Tileset(i, bank, pointerToBlocks, pointerToTileGfx, pointerToCollisionData);
 			t.loadBitmaps(this.reader);

@@ -67,8 +67,11 @@ public class RomReader {
 		this.reader.seek(i);
 	}
 
-	public void skip(int i) throws IOException {
+	public void skipBytes(int i) throws IOException {
 		this.reader.skipBytes(i);
 	}
 
+	public long getCurrentAddress() throws IOException {
+		return this.reader.getFilePointer();
+	}
 }

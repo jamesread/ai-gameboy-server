@@ -1,6 +1,7 @@
 package vbagamedebugger.games.pokemon;
 
 import java.io.IOException;
+import java.util.BitSet;
 import java.util.Vector;
 
 import vbagamedebugger.RomReader;
@@ -27,64 +28,69 @@ public class World {
 
 	}
 
+	/**
+	 * https://bulbapedia.bulbagarden.net/wiki/User:Tiddlywinks/Map_header_data_structure_in_Generation_I#Map_height_and_width
+	 */
 	public Map loadMap(int addr) throws IOException {
+		System.out.printf("Loading map from ROM address: %x\n", addr);
+
 		// header
 		GbByte tileset = this.reader.readGbByte(addr);
 		GbByte h = this.reader.readGbByte();
 		GbByte w = this.reader.readGbByte();
 
 		// object (skip)
-		addr += 2; // pointer to map
-		addr += 2; // pointer to text pointers
-		addr += 2; // pointer to maps script
+		this.reader.skipBytes(2); // pointer to map
+		this.reader.skipBytes(2); // pointer to text pointers
+		this.reader.skipBytes(2); // pointer to maps script
 
+		System.out.printf("Loading map connections from address: %x\n", this.reader.getCurrentAddress());
 		Vector<Direction> connections = new Vector<Direction>();
-		GbByte connectionByte = this.reader.readGbByte(addr);
+		GbByte connectionByte = this.reader.readGbByte();
+		BitSet connectionBitSet = BitSet.valueOf(new long[]{connectionByte.value});
 
-		if (1 == (connectionByte.value & (1 << 3))) {
+		if (connectionBitSet.get(3)) {
 			connections.add(Direction.NORTH);
 		}
 
-		if (1 == (connectionByte.value & (1 << 2))) {
+		if (connectionBitSet.get(2)) {
 			connections.add(Direction.SOUTH);
 		}
 
-		if (1 == (connectionByte.value & (1 << 1))) {
+		if (connectionBitSet.get(1)) {
 			connections.add(Direction.WEST);
 		}
 
-		if (1 == (connectionByte.value & (1 << 0))) {
+		if (connectionBitSet.get(0)) {
 			connections.add(Direction.EAST);
 		}
 
+		System.out.printf("Connections at read: %d = %s\n", connectionByte.value, connections);
+
+
 		for (int i = 0; i < connections.size(); i++) {
-			addr += 11;
+			this.reader.skipBytes(11);
 		}
 
-		addr += 84;
-		addr -= 9; 
-
-		System.out.println(String.format("finished reading object, I'm at: %x", addr));
+		System.out.println(String.format("Finished reading map header. I'm at: %x", addr));
 
 		Map map = new Map(w.value * 2, h.value * 2, connections);
 		map.tileset = tileset.value;
 		map.fillWithBlock(0);
  
-		System.out.println(map);
-
 		this.reader.seek(addr);
 
 		for (int x = 0; x < (w.value * 2); x++) {
 			for (int y = 0; y < (h.value * 2); y++) {
 				GbByte bid = this.reader.readGbByte(addr);
 
-				System.out.println(String.format("addr: %x bid: %x ", addr, bid.value));
+		//		System.out.println(String.format("addr: %x bid: %x ", addr, bid.value));
 				map.setBlock(y, x, new Block(bid.value, y, x));
 				addr++;
 			}
 		}
 
-		System.out.println(map);
+		//System.out.println(map);
 		this.maps.add(map);
 
 		return map;

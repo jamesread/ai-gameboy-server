@@ -41,6 +41,10 @@ public class Map {
 		return connections.contains(d); 
 	}
 
+	public List<Direction> getConnections() {
+		return this.connections;
+	}
+
 	public Block getBlock(int x, int y) {
 		int i = (x * this.w) + y;
 

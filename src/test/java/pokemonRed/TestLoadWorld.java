@@ -16,6 +16,7 @@ import vbagamedebugger.games.pokemon.Map;
 import vbagamedebugger.games.pokemon.TilesetLoader;
 import vbagamedebugger.games.pokemon.World;
 import vbagamedebugger.games.pokemon.World.Direction;
+import vbagamedebugger.games.pokemon.red.MemoryHelpers;
 
 public class TestLoadWorld {
 	private static RomReader reader;
@@ -47,23 +48,24 @@ public class TestLoadWorld {
 
 	@Test
 	public void testLoadCeladonCity() throws Exception {
-		Map celadonCity = world.loadMap(0x18000);
+		Map celadonCity = world.loadMap(MemoryHelpers.ROM_MAP_CELADON_CITY);
 
 		Assert.assertNotNull(celadonCity);
 	}
 
 	@Test
 	public void testLoadPalletTown() throws Exception { 
-		Map palletTown = world.loadMap(0x182a1);
+		Map palletTown = world.loadMap(MemoryHelpers.ROM_MAP_PALLET_TOWN);
+		Assert.assertNotNull(palletTown);
 
 		Assert.assertEquals(20, palletTown.getWidth());
 		Assert.assertEquals(18, palletTown.getHeight());  
+
+		System.out.println("Connections:" + palletTown.getConnections());
+
 		Assert.assertFalse(palletTown.hasConnection(Direction.EAST));
-		Assert.assertFalse(palletTown.hasConnection(Direction.SOUTH));
+		Assert.assertTrue(palletTown.hasConnection(Direction.SOUTH));
 		Assert.assertFalse(palletTown.hasConnection(Direction.WEST));
 		Assert.assertTrue(palletTown.hasConnection(Direction.NORTH));
-		
-		Assert.assertNotNull(palletTown);
 	}
-
 }

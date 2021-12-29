@@ -47,7 +47,6 @@ public class Block {
 			}
 		}
 		
-		System.out.println(globalBlockCharIndex); 
 		setTileRepresentation(globalBlockCharIndex); 
 	}
 	
