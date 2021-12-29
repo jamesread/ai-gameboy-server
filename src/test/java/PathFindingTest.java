@@ -3,9 +3,9 @@ import java.util.Vector;
 import org.junit.Assert;
 import org.junit.Test;
 
-import vbagamedebugger.games.pokemon.Map;
-import vbagamedebugger.games.pokemon.red.pathFinder.Cell;
-import vbagamedebugger.games.pokemon.red.pathFinder.PathFinder;
+import vbagamedebugger.games.pokemon.model.Map;
+import vbagamedebugger.games.pokemon.model.red.pathFinder.Cell;
+import vbagamedebugger.games.pokemon.model.red.pathFinder.PathFinder;
 
 public class PathFindingTest {
 	@Test

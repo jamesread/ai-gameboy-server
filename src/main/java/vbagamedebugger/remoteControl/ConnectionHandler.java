@@ -1,4 +1,4 @@
-package vbagamedebugger;
+package vbagamedebugger.remoteControl;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -8,6 +8,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
+
+import vbagamedebugger.Buttons;
+import vbagamedebugger.GbHelper;
+import vbagamedebugger.Main;
 
 import com.aurellem.gb.Gb;
 

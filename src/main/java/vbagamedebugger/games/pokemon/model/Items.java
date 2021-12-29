@@ -1,4 +1,4 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 public enum Items {
 	ANTIDOTE(0x0b), POKEBALL(0x4), POTION(0x14), UNKNOWN(0x0);

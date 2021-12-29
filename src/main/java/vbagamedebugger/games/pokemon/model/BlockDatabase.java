@@ -1,4 +1,4 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 import java.util.ArrayList;
 

@@ -8,8 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import vbagamedebugger.games.pokemon.Block;
-import vbagamedebugger.games.pokemon.Map;
+import vbagamedebugger.games.pokemon.model.Block;
+import vbagamedebugger.games.pokemon.model.Map;
 
 public class ComponentMap extends Component {
 	private final TilesetDatabase tsdb = new TilesetDatabase();

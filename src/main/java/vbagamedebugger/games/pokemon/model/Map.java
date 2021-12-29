@@ -1,11 +1,11 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Vector;
 
-import vbagamedebugger.games.pokemon.World.Direction;
-import vbagamedebugger.games.pokemon.red.pathFinder.Cell;
+import vbagamedebugger.games.pokemon.model.World.Direction;
+import vbagamedebugger.games.pokemon.model.red.pathFinder.Cell;
 
 public class Map {
 

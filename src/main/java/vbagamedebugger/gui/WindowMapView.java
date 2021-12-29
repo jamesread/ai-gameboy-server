@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
-import vbagamedebugger.games.pokemon.Map;
+import vbagamedebugger.games.pokemon.model.Map;
 
 public class WindowMapView extends JFrame {
 	private final ComponentMap componentMap = new ComponentMap();

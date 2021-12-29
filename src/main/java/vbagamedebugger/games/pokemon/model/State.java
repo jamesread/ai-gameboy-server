@@ -1,4 +1,4 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 public enum State {
 	UNKNOWN, FREEROAM, UNKNOWN_TEXT, WILD_APPEARED, CHOOSE_POKEMON, BATTLE_MAIN, MOVE_SELECT, ACK_EXPERIENCE, READING_SIGN;

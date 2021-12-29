@@ -12,7 +12,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 
-import vbagamedebugger.games.pokemon.Bot;
+import vbagamedebugger.games.pokemon.bot.Bot;
 
 public class WindowBotWatcher extends JFrame implements Runnable {
 	private final Bot bot;

@@ -18,7 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import vbagamedebugger.games.pokemon.PokeCharset;
+import vbagamedebugger.games.pokemon.model.PokeCharset;
 
 import com.aurellem.gb.Gb;
 

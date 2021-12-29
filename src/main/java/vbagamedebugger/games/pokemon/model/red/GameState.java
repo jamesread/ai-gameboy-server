@@ -1,19 +1,18 @@
-package vbagamedebugger.games.pokemon.yellow;
+package vbagamedebugger.games.pokemon.model.red;
 
 import java.util.Vector;
 
 import vbagamedebugger.GbHelper;
 import vbagamedebugger.Main;
 import vbagamedebugger.Util;
-import vbagamedebugger.games.pokemon.InventorySlot;
-import vbagamedebugger.games.pokemon.Pokemon;
-import vbagamedebugger.games.pokemon.State;
-import vbagamedebugger.games.pokemon.Tile;
+import vbagamedebugger.games.pokemon.model.InventorySlot;
+import vbagamedebugger.games.pokemon.model.Pokemon;
+import vbagamedebugger.games.pokemon.model.State;
+import vbagamedebugger.games.pokemon.model.World;
 
 import com.aurellem.gb.Gb;
 
-public class GameState implements Runnable {
-
+public class GameState implements Runnable, vbagamedebugger.games.pokemon.model.GameState {
 	private State state = State.UNKNOWN;
 	String txt0 = "";
 	String txt1 = "";
@@ -47,18 +46,18 @@ public class GameState implements Runnable {
 
 	int mapTileset = 0;
 
-	public int mapHeight = 0;
+	public int mapHeightBlocks = 0;
 
-	public int mapWidth = 0;
-
-	public Tile[][] map;
+	public int mapWidthBlocks = 0;
 
 	private final Vector<Pokemon> encounterablePokemon = new Vector<Pokemon>();
 
-	private int mapHeightCoords = 0;
+	public int mapHeightCoords = 0;
 
-	private int mapWidthCoords = 0;
+	public int mapWidthCoords = 0;
+	
 
+	@Override
 	public State getState() {
 		return this.state;
 	}
@@ -66,6 +65,8 @@ public class GameState implements Runnable {
 	@Override
 	public void run() {
 		try {
+			this.updateInit();
+
 			while (Main.run) {
 				this.update();
 				Util.sleep(200);
@@ -97,18 +98,19 @@ public class GameState implements Runnable {
 		ret += "Coords: " + this.cordX + ":" + this.cordY + "\n";
 		ret += "Last opponent name: " + this.lastOpponentName + "\n";
 		ret += "Game time: " + this.hours + ":" + this.minutes + ":" + this.seconds + ":" + this.frames + "\n";
-		ret += "Map: " + this.mapWidth + ":" + this.mapHeight + " tileset: " + this.mapTileset + "\n";
 		ret += "Money: " + this.money + "\n";
+		ret += "Map: " + this.mapWidthBlocks + ":" + this.mapHeightBlocks + " (blocks), " + this.mapWidthCoords + ":" + this.mapHeightCoords + " (coords), tileset: " + this.mapTileset + "\n";
+
 		return ret;
 	}
 
 	private void update() {
 		this.state = State.FREEROAM;
 		this.playerName = GbHelper.dumpBlockString(MemoryHelpers.PLAYER_NAME_START, MemoryHelpers.PLAYER_NAME_FIN);
-		this.lastOpponentName = GbHelper.dumpBlockString(0xcfd9, 0xcfe4);
+		this.lastOpponentName = GbHelper.dumpBlockString(0xcfda, 0xcfe5);
 
-		this.cordY = GbHelper.dumpByte(0xd360);
-		this.cordX = GbHelper.dumpByte(0xd361);
+		this.cordY = GbHelper.dumpByte(0xd361);
+		this.cordX = GbHelper.dumpByte(0xd362);
 
 		this.hours = GbHelper.dumpBlockInt2(0xda40);
 		this.minutes = Gb.readMemory(0xda42);
@@ -116,32 +118,46 @@ public class GameState implements Runnable {
 		this.frames = Gb.readMemory(0xda44);
 
 		this.inBattle = false;
-		if (Gb.readMemory(0xd056) == 1) {
+		if (GbHelper.readBoolean(0xd056)) {
 			this.state = State.BATTLE_MAIN;
 			this.inBattle = true;
 		}
 
-		if (Gb.readMemory(0xcfc3) == 1) {
+		if (GbHelper.readBoolean(0xcfc3)) {
 			this.state = State.READING_SIGN;
-		}
-
+		}  
+ 
 		this.updateOnScreenText();
 		this.updateInventoryItems();
 		this.updateMap();
 		this.updateEncounterablePokemon();
 	}
 
+	private void updateBlockTileContents(int blockId) {
+		for (int baseAddress = 0x0; baseAddress < 0; baseAddress++) {
+			Main.gbac.readRom(baseAddress);
+		}
+	}
+
 	private void updateEncounterablePokemon() {
-		int baseAddress = 0xd887;
+		int baseAddress = 0xd888;
 
 		this.encounterablePokemon.clear();
 
 		for (int i = 0; i < 10; i++) {
-			int level = Gb.readMemory(baseAddress + (i * 2));
-			int pokemon = Gb.readMemory(baseAddress + (i * 2) + 1);
+			final int level = Gb.readMemory(baseAddress + (i * 2));
+			final int pokemon = Gb.readMemory(baseAddress + (i * 2) + 1);
+
+			if (pokemon == 0) {
+				break;
+			}
 
 			this.encounterablePokemon.add(new Pokemon(pokemon, level));
 		}
+	}
+
+	public void updateInit() {
+		this.updateBlockTileContents(1);
 	}
 
 	private void updateInventoryItems() {
@@ -156,12 +172,12 @@ public class GameState implements Runnable {
 	}
 
 	private void updateMap() {
-		this.mapTileset = Gb.readMemory(0xd366);
-		this.mapHeight = Gb.readMemory(0xd367);
-		this.mapHeightCoords = this.mapHeight * 2;
-		this.mapWidth = Gb.readMemory(0xd368);
-		this.mapWidthCoords = this.mapWidth * 2;
+		this.mapTileset = Gb.readMemory(MemoryHelpers.MAP_TILESET);
+		this.mapHeightBlocks = Gb.readMemory(MemoryHelpers.MAP_HEIGHT_BLOCKS);
+		this.mapWidthBlocks = Gb.readMemory(MemoryHelpers.MAP_WIDTH_BLOCKS);
 
+		this.mapHeightCoords = this.mapHeightBlocks * 2;
+		this.mapWidthCoords = this.mapWidthBlocks * 2;
 	}
 
 	private void updateOnScreenText() {
@@ -204,4 +220,5 @@ public class GameState implements Runnable {
 			}
 		}
 	}
+
 }

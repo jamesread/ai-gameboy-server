@@ -1,4 +1,4 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 import java.io.IOException;
 import java.util.BitSet;

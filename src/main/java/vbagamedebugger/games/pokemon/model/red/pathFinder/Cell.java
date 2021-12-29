@@ -1,11 +1,11 @@
-package vbagamedebugger.games.pokemon.red.pathFinder;
+package vbagamedebugger.games.pokemon.model.red.pathFinder;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 
-import vbagamedebugger.games.pokemon.Block;
+import vbagamedebugger.games.pokemon.model.Block;
 
 public class Cell {
 

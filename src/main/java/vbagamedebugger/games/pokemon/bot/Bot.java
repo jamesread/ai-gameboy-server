@@ -1,9 +1,12 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.bot;
 
 import java.util.Vector;
 
 import vbagamedebugger.Buttons;
 import vbagamedebugger.GbHelper;
+import vbagamedebugger.games.pokemon.model.GameState;
+import vbagamedebugger.games.pokemon.model.State;
+import vbagamedebugger.games.pokemon.model.Pokemon;
 import vbagamedebugger.Main;
 
 public class Bot implements Runnable {

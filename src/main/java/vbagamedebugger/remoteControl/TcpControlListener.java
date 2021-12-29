@@ -1,8 +1,10 @@
-package vbagamedebugger;
+package vbagamedebugger.remoteControl;
 
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import vbagamedebugger.Main;
 
 public class TcpControlListener implements Runnable {
 	private ServerSocket sock;

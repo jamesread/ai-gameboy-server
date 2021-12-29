@@ -1,8 +1,8 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 import java.util.HashMap;
 
-import vbagamedebugger.games.pokemon.red.pathFinder.Cell;
+import vbagamedebugger.games.pokemon.model.red.pathFinder.Cell;
 
 public class Block {
 	public static char globalBlockCharIndex = 'a';

@@ -1,10 +1,10 @@
-package vbagamedebugger.games.pokemon.red.pathFinder;
+package vbagamedebugger.games.pokemon.model.red.pathFinder;
 
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import vbagamedebugger.games.pokemon.Map;
+import vbagamedebugger.games.pokemon.model.Map;
 
 public class PathFinder {
 	private final Vector<Cell> path = new Vector<Cell>();

@@ -2,8 +2,8 @@ package pokemonRed;
 
 import org.junit.Test;
 
-import vbagamedebugger.games.pokemon.Block;
-import vbagamedebugger.games.pokemon.Map;
+import vbagamedebugger.games.pokemon.model.Block;
+import vbagamedebugger.games.pokemon.model.Map;
 
 public class TestMapRepresentation {
 	@Test

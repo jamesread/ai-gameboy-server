@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import vbagamedebugger.RomReader.GbByte;
-import vbagamedebugger.games.pokemon.PokeCharset;
+import vbagamedebugger.games.pokemon.model.PokeCharset;
 
 import com.aurellem.gb.Gb;
 

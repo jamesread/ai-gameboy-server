@@ -1,4 +1,4 @@
-package vbagamedebugger.games.pokemon.red;
+package vbagamedebugger.games.pokemon.model.red;
 
 public class MemoryHelpers {
 	private static final int TXT_LINE_CHARS_WIDTH = 20;

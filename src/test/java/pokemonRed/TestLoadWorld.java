@@ -12,11 +12,11 @@ import org.junit.Test;
 
 import vbagamedebugger.ComponentMap;
 import vbagamedebugger.RomReader;
-import vbagamedebugger.games.pokemon.Map;
-import vbagamedebugger.games.pokemon.TilesetLoader;
-import vbagamedebugger.games.pokemon.World;
-import vbagamedebugger.games.pokemon.World.Direction;
-import vbagamedebugger.games.pokemon.red.MemoryHelpers;
+import vbagamedebugger.games.pokemon.model.Map;
+import vbagamedebugger.games.pokemon.model.TilesetLoader;
+import vbagamedebugger.games.pokemon.model.World;
+import vbagamedebugger.games.pokemon.model.World.Direction;
+import vbagamedebugger.games.pokemon.model.red.MemoryHelpers;
 
 public class TestLoadWorld {
 	private static RomReader reader;

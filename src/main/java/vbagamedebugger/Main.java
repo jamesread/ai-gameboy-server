@@ -6,7 +6,8 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
-import vbagamedebugger.games.pokemon.red.GameState;
+import vbagamedebugger.games.pokemon.model.red.GameState;
+import vbagamedebugger.remoteControl.TcpControlListener;
 
 import com.aurellem.gb.Gb;
 import com.beust.jcommander.JCommander;

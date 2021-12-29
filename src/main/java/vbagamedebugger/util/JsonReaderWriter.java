@@ -11,7 +11,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-public class GsonDebugger {
+public class JsonReaderWriter {
 	private static final Gson gson;
 
 	static {

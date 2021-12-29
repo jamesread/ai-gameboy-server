@@ -1,8 +1,7 @@
-package vbagamedebugger.games.pokemon;
+package vbagamedebugger.games.pokemon.model;
 
 import java.io.IOException;
 
-import vbagamedebugger.GsonDebugger;
 import vbagamedebugger.RomReader;
 import vbagamedebugger.RomReader.GbByte;
 import vbagamedebugger.RomReader.GbPointer;
@@ -35,8 +34,6 @@ public class TilesetLoader {
 			Tileset t = new Tileset(i, bank, pointerToBlocks, pointerToTileGfx, pointerToCollisionData);
 			t.loadBitmaps(this.reader);
 			t.loadBlocksets();
-
-			System.out.println(GsonDebugger.toJson(t));
 
 			tsdb.tilesets.put(i, t);
 		}
