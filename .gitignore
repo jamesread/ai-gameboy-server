@@ -7,3 +7,4 @@ target
 *.log
 rom*
 repo
+dependency-reduced-pom.xml
