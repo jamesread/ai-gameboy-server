@@ -1,0 +1,19 @@
+digraph {
+	Emulator[label = "Emulator (Visual Boy Advance)"]
+	Emulator -> GameboyIO [label = "RAM"]
+
+	subgraph cluster_0 {
+		color = black
+		GameboyIO
+		StateDecoder[label = "State decoder (game specific)"] 
+		GameBot[label = "Bot (game specific)"] 
+		DebuggingTools[label = "Debugging Tools"]
+
+		GameboyIO -> Emulator [label = "Buttons"]
+
+		GameboyIO -> DebuggingTools
+		GameboyIO -> StateDecoder[label = "RAM/ROM"]
+		StateDecoder -> GameBot
+		GameBot -> GameboyIO [label = "Buttons"]
+	}
+}
