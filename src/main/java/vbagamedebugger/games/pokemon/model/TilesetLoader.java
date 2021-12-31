@@ -2,17 +2,15 @@ package vbagamedebugger.games.pokemon.model;
 
 import java.io.IOException;
 
-import vbagamedebugger.RomReader;
-import vbagamedebugger.RomReader.GbByte;
-import vbagamedebugger.RomReader.GbPointer;
+import vbagamedebugger.gbio.GbRomReader;
 import vbagamedebugger.TileBitmap;
 import vbagamedebugger.Tileset;
 import vbagamedebugger.TilesetDatabase;
 
 public class TilesetLoader {
-	private final RomReader reader;
+	private final GbRomReader reader;
 
-	public TilesetLoader(RomReader reader) throws Exception {
+	public TilesetLoader(GbRomReader reader) throws Exception {
 		this.reader = reader;
 	}
 
@@ -23,11 +21,11 @@ public class TilesetLoader {
 		this.reader.seek(addr);
 
 		for (int i = 0; i <= 23; i++) {
-			GbByte bank = this.reader.readGbByte();
+			int bank = this.reader.readByte();
 
-			GbPointer pointerToBlocks = this.reader.readGbPointer();
-			GbPointer pointerToTileGfx = this.reader.readGbPointer();
-			GbPointer pointerToCollisionData = this.reader.readGbPointer();
+			int pointerToBlocks = this.reader.readPointer();
+			int pointerToTileGfx = this.reader.readPointer();
+			int pointerToCollisionData = this.reader.readPointer();
 
 			this.reader.skipBytes(5);
 

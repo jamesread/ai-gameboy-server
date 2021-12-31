@@ -4,8 +4,7 @@ import java.io.IOException;
 import java.util.BitSet;
 import java.util.Vector;
 
-import vbagamedebugger.RomReader;
-import vbagamedebugger.RomReader.GbByte;
+import vbagamedebugger.gbio.GbRomReader;
 
 public class World {
 	public enum Direction {
@@ -14,9 +13,9 @@ public class World {
 
 	public Vector<Map> maps = new Vector<Map>();
 
-	private final RomReader reader;
+	private final GbRomReader reader;
 
-	public World(RomReader reader) {
+	public World(GbRomReader reader) {
 		this.reader = reader;
 	}
 
@@ -35,9 +34,9 @@ public class World {
 		System.out.printf("Loading map from ROM address: %x\n", addr);
 
 		// header
-		GbByte tileset = this.reader.readGbByte(addr);
-		GbByte h = this.reader.readGbByte();
-		GbByte w = this.reader.readGbByte();
+		int tileset = this.reader.readByte(addr);
+		int h = this.reader.readByte();
+		int w = this.reader.readByte();
 
 		// object (skip)
 		this.reader.skipBytes(2); // pointer to map
@@ -46,8 +45,8 @@ public class World {
 
 		System.out.printf("Loading map connections from address: %x\n", this.reader.getCurrentAddress());
 		Vector<Direction> connections = new Vector<Direction>();
-		GbByte connectionByte = this.reader.readGbByte();
-		BitSet connectionBitSet = BitSet.valueOf(new long[]{connectionByte.value});
+		int connectionByte = this.reader.readByte();
+		BitSet connectionBitSet = BitSet.valueOf(new long[]{connectionByte});
 
 		if (connectionBitSet.get(3)) {
 			connections.add(Direction.NORTH);
@@ -65,7 +64,7 @@ public class World {
 			connections.add(Direction.EAST);
 		}
 
-		System.out.printf("Connections at read: %d = %s\n", connectionByte.value, connections);
+		System.out.printf("Connections at read: %d = %s\n", connectionByte, connections);
 
 
 		for (int i = 0; i < connections.size(); i++) {
@@ -74,18 +73,18 @@ public class World {
 
 		System.out.println(String.format("Finished reading map header. I'm at: %x", addr));
 
-		Map map = new Map(w.value * 2, h.value * 2, connections);
-		map.tileset = tileset.value;
+		Map map = new Map(w * 2, h * 2, connections);
+		map.tileset = tileset;
 		map.fillWithBlock(0);
  
 		this.reader.seek(addr);
 
-		for (int x = 0; x < (w.value * 2); x++) {
-			for (int y = 0; y < (h.value * 2); y++) {
-				GbByte bid = this.reader.readGbByte(addr);
+		for (int x = 0; x < (w * 2); x++) {
+			for (int y = 0; y < (h * 2); y++) {
+				int bid = this.reader.readByte(addr);
 
 		//		System.out.println(String.format("addr: %x bid: %x ", addr, bid.value));
-				map.setBlock(y, x, new Block(bid.value, y, x));
+				map.setBlock(y, x, new Block(bid, y, x));
 				addr++;
 			}
 		}

@@ -19,6 +19,9 @@ import javax.swing.JList;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 
+import vbagamedebugger.gbio.GbButtons;
+import vbagamedebugger.gbio.GbIO;
+
 import vbagamedebugger.DebugPresetModel.DebugPreset;
 
 public class WindowDebug extends JFrame {
@@ -63,7 +66,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.gbac.memSnapshot();
+				Main.gbio.memSnapshot();
 			}
 		});
 
@@ -72,7 +75,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.gbac.memCmp();
+				//Main.gbio.memCmp(); FIXME
 			}
 		});
 
@@ -80,7 +83,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int dump[] = Main.gbac.memDump();
+				int dump[] = Main.gbio.memDump();
 
 				try {
 					File f = new File("mem.dmp");
@@ -104,7 +107,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int dump[] = Main.gbac.getMemCmp();
+				int dump[] = Main.gbio.getMemCmp();
 
 				try {
 					File f = new File("mem.dmp");
@@ -197,7 +200,7 @@ public class WindowDebug extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbHelper.press(Buttons.UP);
+				GbIO.press(GbButtons.UP);
 			}
 
 		}), gbc);
@@ -205,21 +208,21 @@ public class WindowDebug extends JFrame {
 		this.panControls.add(new XButton("\u25bc", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbHelper.press(Buttons.DOWN);
+				GbIO.press(GbButtons.DOWN);
 			}
 		}), gbc);
 
 		this.panControls.add(new XButton("\u25c0", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbHelper.press(Buttons.LEFT);
+				GbIO.press(GbButtons.LEFT);
 			}
 		}), gbc);
 
 		this.panControls.add(new XButton("\u25b6", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GbHelper.press(Buttons.RIGHT);
+				GbIO.press(GbButtons.RIGHT);
 			}
 		}), gbc);
 

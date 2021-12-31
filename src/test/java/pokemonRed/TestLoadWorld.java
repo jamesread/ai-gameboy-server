@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import vbagamedebugger.ComponentMap;
-import vbagamedebugger.RomReader;
+import vbagamedebugger.gbio.GbRomReader;
 import vbagamedebugger.games.pokemon.model.Map;
 import vbagamedebugger.games.pokemon.model.TilesetLoader;
 import vbagamedebugger.games.pokemon.model.World;
@@ -19,7 +19,7 @@ import vbagamedebugger.games.pokemon.model.World.Direction;
 import vbagamedebugger.games.pokemon.model.red.MemoryHelpers;
 
 public class TestLoadWorld {
-	private static RomReader reader;
+	private static GbRomReader reader;
 	private static World world;
 
 	public static void main(String[] args) throws Exception {
@@ -42,7 +42,7 @@ public class TestLoadWorld {
 	public static void setup() throws FileNotFoundException {
 		Assume.assumeTrue(new File("rom.gb").exists());
 
-		TestLoadWorld.reader = new RomReader("rom.gb");
+		TestLoadWorld.reader = new GbRomReader("rom.gb");
 		world = new World(TestLoadWorld.reader);
 	}
 

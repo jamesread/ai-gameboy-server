@@ -2,15 +2,15 @@ package vbagamedebugger.games.pokemon.bot;
 
 import java.util.Vector;
 
-import vbagamedebugger.Buttons;
-import vbagamedebugger.GbHelper;
-import vbagamedebugger.games.pokemon.model.GameState;
+import vbagamedebugger.gbio.GbButtons;
+import vbagamedebugger.gbio.GbIO;
+import vbagamedebugger.games.pokemon.model.PokemonGameState;
 import vbagamedebugger.games.pokemon.model.State;
+import static vbagamedebugger.games.pokemon.model.State.*;
 import vbagamedebugger.games.pokemon.model.Pokemon;
-import vbagamedebugger.Main;
+import vbagamedebugger.Util;
 
 public class Bot implements Runnable {
-
 	private enum Objective {
 		EXPLORE;
 	}
@@ -26,9 +26,9 @@ public class Bot implements Runnable {
 	private State lastState = State.FREEROAM;
 	private final boolean runFromWildPokemon = false;
 
-	private final GameState gs;
+	private final PokemonGameState gs;
 
-	public Bot(GameState gs) {
+	public Bot(PokemonGameState gs) {
 		this.gs = gs;
 		new Thread(this, "bot").start();
 	}
@@ -38,47 +38,47 @@ public class Bot implements Runnable {
 		switch (this.gs.getState()) {
 		case READING_SIGN:
 		case UNKNOWN_TEXT:
-			GbHelper.press(Buttons.A);
+			GbIO.press(GbButtons.A);
 			break;
 		case BATTLE_MAIN:
 			if (this.runFromWildPokemon) {
-				GbHelper.press(Buttons.DOWN);
-				GbHelper.press(Buttons.RIGHT);
+				GbIO.press(GbButtons.DOWN);
+				GbIO.press(GbButtons.RIGHT);
 			} else {
-				GbHelper.press(Buttons.UP);
-				GbHelper.press(Buttons.LEFT);
-				GbHelper.press(Buttons.A);
+				GbIO.press(GbButtons.UP);
+				GbIO.press(GbButtons.LEFT);
+				GbIO.press(GbButtons.A);
 			}
 			break;
 		case CHOOSE_POKEMON:
-			GbHelper.press(Buttons.B);
-			GbHelper.press(Buttons.LEFT);
+			GbIO.press(GbButtons.B);
+			GbIO.press(GbButtons.LEFT);
 			break;
 		case MOVE_SELECT:
-			int rndMove = Main.rnd.nextInt(4);
+			int rndMove = Util.rnd.nextInt(4);
 
 			System.out.println("Selectin move: " + rndMove);
 
 			for (int i = 0; i < rndMove; i++) {
-				GbHelper.press(Buttons.DOWN);
+				GbIO.press(GbButtons.DOWN);
 				this.sleep();
 			}
 
-			GbHelper.press(Buttons.A);
+			GbIO.press(GbButtons.A);
 
 			break;
 		case WILD_APPEARED:
-			GbHelper.press(Buttons.A);
+			GbIO.press(GbButtons.A);
 			break;
 		case FREEROAM:
-			GbHelper.press(Buttons.randomDirection());
+			GbIO.press(GbButtons.randomDirection());
 			break;
 		case ACK_EXPERIENCE:
-			GbHelper.press(Buttons.A);
+			GbIO.press(GbButtons.A);
 
 			break;
 		default:
-			GbHelper.press(Buttons.random());
+			GbIO.press(GbButtons.random());
 		}
 	}
 

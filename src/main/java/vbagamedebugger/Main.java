@@ -1,26 +1,22 @@
 package vbagamedebugger;
 
-import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 
+import vbagamedebugger.gbio.GbIO;
 import vbagamedebugger.games.pokemon.model.red.GameState;
 import vbagamedebugger.remoteControl.TcpControlListener;
 
-import com.aurellem.gb.Gb;
 import com.beust.jcommander.JCommander;
 
 public class Main {
-
 	private static WindowDebug wndDebug = new WindowDebug();
 
 	private static final Vector<WindowWatch> watchDialogs = new Vector<WindowWatch>();
 
 	public static boolean run = true;
-
-	public static Random rnd = new Random();
 
 	public static final GameState gameState = new GameState();
 
@@ -28,7 +24,7 @@ public class Main {
 
 	private static int lastPromptedInt = 0;
 
-	public final static GbHelper gbac = new GbHelper();
+	public final static GbIO gbio = new GbIO();
 
 	static {
 		try {
@@ -46,7 +42,7 @@ public class Main {
 		Main.wndDebug.setVisible(true);
 
 		if (Main.args.startBot) {
-			gbac.startEmulator(Main.args.romPath);
+			gbio.startEmulator(Main.args.romPath);
 		}
 	}
 
@@ -101,7 +97,7 @@ public class Main {
 		System.out.println("shutdown request ");
 
 		Main.run = false;
-		Gb.shutdown();
+		gbio.shutdown();
 		System.out.println("shutdown finished request");
 		System.exit(0);
 	}

@@ -9,8 +9,8 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
-import vbagamedebugger.Buttons;
-import vbagamedebugger.GbHelper;
+import vbagamedebugger.gbio.GbButtons;
+import vbagamedebugger.gbio.GbIO;
 import vbagamedebugger.Main;
 
 import com.aurellem.gb.Gb;
@@ -33,16 +33,16 @@ public class ConnectionHandler implements Runnable {
 		try {
 			switch (scanner.next("\\w+")) {
 			case "u":
-				GbHelper.press(Buttons.UP);
+				GbIO.press(GbButtons.UP);
 				break;
 			case "d":
-				GbHelper.press(Buttons.DOWN);
+				GbIO.press(GbButtons.DOWN);
 				break;
 			case "l":
-				GbHelper.press(Buttons.LEFT);
+				GbIO.press(GbButtons.LEFT);
 				break;
 			case "r":
-				GbHelper.press(Buttons.RIGHT);
+				GbIO.press(GbButtons.RIGHT);
 				break;
 			case "quit":
 				Main.shutdown();

@@ -3,18 +3,17 @@ package vbagamedebugger;
 import java.io.IOException;
 import java.util.HashMap;
 
-import vbagamedebugger.RomReader.GbByte;
-import vbagamedebugger.RomReader.GbPointer;
+import vbagamedebugger.gbio.GbRomReader;
 
 public class Tileset {
 	public HashMap<Integer, TileBitmap> tiles = new HashMap<Integer, TileBitmap>();
-	private final GbPointer pointerToCollisionData;
-	private final GbPointer pointerToTileGfx;
-	private final GbPointer pointerToBlocks;
+	private final int pointerToCollisionData;
+	private final int pointerToTileGfx;
+	private final int pointerToBlocks;
 	private final int id;
-	private final GbByte bank;
+	private final int bank;
 
-	public Tileset(int id, GbByte bank, GbPointer pointerToBlocks, GbPointer pointerToTileGfx, GbPointer pointerToCollisionData) {
+	public Tileset(int id, int bank, int pointerToBlocks, int pointerToTileGfx, int pointerToCollisionData) {
 		this.id = id;
 		this.bank = bank;
 		this.pointerToBlocks = pointerToBlocks;
@@ -22,8 +21,8 @@ public class Tileset {
 		this.pointerToCollisionData = pointerToCollisionData;
 	}
 
-	public void loadBitmaps(RomReader reader) throws IOException {
-		int base = (((this.bank.value - 1) * 0x4000)) + this.pointerToTileGfx.value;
+	public void loadBitmaps(GbRomReader reader) throws IOException {
+		int base = (((this.bank - 1) * 0x4000)) + this.pointerToTileGfx;
 
 		System.out.println(String.format("Loading GFX for tileset " + this.id + " from %x", base));
 
@@ -33,7 +32,7 @@ public class Tileset {
 	}
 
 	public void loadBlocksets() {
-		int base = (((this.bank.value - 1) * 0x4000)) + this.pointerToBlocks.value;
+		int base = (((this.bank - 1) * 0x4000)) + this.pointerToBlocks;
 
 		System.out.println(String.format("Loading BLK for tileset " + this.id + " from %x", base));
 	}

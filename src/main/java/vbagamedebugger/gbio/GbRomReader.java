@@ -1,33 +1,16 @@
-package vbagamedebugger;
+package vbagamedebugger.gbio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-public class RomReader {
-
-	public static class GbByte {
-		public final int value;
-
-		public GbByte(int b) {
-			this.value = b;
-		}
-	}
-
-	public static class GbPointer {
-		public final int value;
-
-		public GbPointer(int value) {
-			this.value = value;
-		}
-	}
-
+public class GbRomReader {
 	private final String path;
 
 	private final RandomAccessFile reader;
 
-	public RomReader(String path) throws FileNotFoundException {
+	public GbRomReader(String path) throws FileNotFoundException {
 		this.path = path;
 
 		this.reader = new RandomAccessFile(new File(path), "r");
@@ -41,26 +24,26 @@ public class RomReader {
 		return ret;
 	}
 
-	public GbByte readGbByte() throws IOException {
-		return new GbByte(this.reader.readUnsignedByte());
+	public int readByte() throws IOException {
+		return this.reader.readUnsignedByte();
 	}
 
-	public GbByte readGbByte(int addr) throws IOException {
+	public int readByte(int addr) throws IOException {
 		this.reader.seek(addr);
 
-		return this.readGbByte();
+		return this.readByte();
 	}
 
-	public GbPointer readGbPointer() throws IOException {
+	public int readPointer() throws IOException {
 		int b1 = this.reader.readUnsignedByte();
 		int b2 = this.reader.readUnsignedByte();
 
-		return new GbPointer((b2 << 8) | b1);
+		return new Integer((b2 << 8) | b1);
 	}
 
-	public GbPointer readPointer(int address) throws IOException {
+	public int readPointer(int address) throws IOException {
 		this.reader.seek(address);
-		return this.readGbPointer();
+		return this.readPointer();
 	}
 
 	public void seek(int i) throws IOException {

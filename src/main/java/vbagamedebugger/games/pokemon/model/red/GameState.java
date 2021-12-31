@@ -12,7 +12,7 @@ import vbagamedebugger.games.pokemon.model.World;
 
 import com.aurellem.gb.Gb;
 
-public class GameState implements Runnable, vbagamedebugger.games.pokemon.model.GameState {
+public class GameState implements Runnable, vbagamedebugger.games.pokemon.model.PokemonGameState {
 	private State state = State.UNKNOWN;
 	String txt0 = "";
 	String txt1 = "";
@@ -134,8 +134,12 @@ public class GameState implements Runnable, vbagamedebugger.games.pokemon.model.
 	}
 
 	private void updateBlockTileContents(int blockId) {
-		for (int baseAddress = 0x0; baseAddress < 0; baseAddress++) {
-			Main.gbac.readRom(baseAddress);
+		try {
+			for (int baseAddress = 0x0; baseAddress < 0; baseAddress++) {
+				Main.gbio.rom.readByte(baseAddress);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

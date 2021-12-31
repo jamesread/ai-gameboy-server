@@ -1,15 +1,19 @@
-package vbagamedebugger;
+package vbagamedebugger.gbio;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 
-import vbagamedebugger.RomReader.GbByte;
 import vbagamedebugger.games.pokemon.model.PokeCharset;
 
 import com.aurellem.gb.Gb;
 
-public class GbHelper {
+import java.util.Vector;
+
+public class GbIO {
+	interface Listener {
+		public void onEmulatorStarted();
+	}
 
 	private static int keymask = 0;
 
@@ -51,12 +55,8 @@ public class GbHelper {
 		return s;
 	}
 
-	public static int dumpByte(int address) {
-		return Gb.readMemory(address);
-	}
-
-	public static void press(Buttons... buttons) {
-		for (Buttons button : buttons) {
+	public static void press(GbButtons... buttons) {
+		for (GbButtons button : buttons) {
 			System.out.println("Button:" + button);
 
 			keymask |= button.mask;
@@ -73,10 +73,6 @@ public class GbHelper {
 
 	private int[] snapshot;
 
-	public void memCmp() {
-		new WindowWatch(getMemCmp());
-	}
-	
 	public int[] getMemCmp() {
 		int[] diff = new int[0xffff];
 		Arrays.fill(diff, 0);
@@ -108,22 +104,14 @@ public class GbHelper {
 		this.snapshot = this.memDump();
 	}
 
-	public GbByte readRom(int baseAddress) {
-		try {   
-			return reader.readGbByte(baseAddress);
-		} catch (IOException e ){
-			e.printStackTrace();
-			return new GbByte(0);
-		}
-	}
-	  
-	private RomReader reader; 
+	public GbRomReader rom;
+	public GbRamReader ram; 
 
 	public void startEmulator(final String romPath) throws FileNotFoundException {
 		this.romPath = romPath;
-		
-		reader = new RomReader(this.romPath); 
 
+		this.rom = new GbRomReader(romPath);
+		
 		Thread t = new Thread() {
 			@Override
 			public void run() {
@@ -131,9 +119,7 @@ public class GbHelper {
 
 				System.out.println("Rom size: " + Gb.getROMSize());
 
-				Main.onEmulatorStarted();
-
-				while (Main.run) {
+				while (true) { // FIXME
 					try {
 						if (keymask != 0) {
 							Gb.step(keymask);
@@ -155,8 +141,8 @@ public class GbHelper {
 		};
 		t.start();
 	}
- 
-	public static boolean readBoolean(int addr) {
-		return Gb.readMemory(addr) == 1;
+
+	public void shutdown() {
+		Gb.shutdown();
 	}
-}
+ }

@@ -3,6 +3,8 @@ package vbagamedebugger;
 import java.awt.Color;
 import java.util.HashMap;
 
+import vbagamedebugger.Util;
+
 public class TilesetDatabase {
 	private final HashMap<Integer, Color> tilesetColors = new HashMap<Integer, Color>();
 	public HashMap<Integer, Tileset> tilesets = new HashMap<Integer, Tileset>();
@@ -15,7 +17,7 @@ public class TilesetDatabase {
 			System.out.println("max: " + this.max);
 		}
 
-		return new Color(Main.rnd.nextInt(255), Main.rnd.nextInt(255), Main.rnd.nextInt(255));
+		return new Color(Util.rnd.nextInt(255), Util.rnd.nextInt(255), Util.rnd.nextInt(255));
 	}
 
 	public Color getColor(int tileset) {
