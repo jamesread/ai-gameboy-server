@@ -2,7 +2,8 @@ package vbagamedebugger.games.pokemon.yellow;
 
 import java.util.Vector;
 
-import vbagamedebugger.GbHelper;
+import vbagamedebugger.gbio.GbIO;
+import vbagamedebugger.gbio.GbRamReader;
 import vbagamedebugger.Main;
 import vbagamedebugger.Util;
 import vbagamedebugger.games.pokemon.model.InventorySlot;
@@ -59,6 +60,12 @@ public class GameState implements Runnable {
 
 	private int mapWidthCoords = 0;
 
+	private final GbIO gbio;
+
+	public GameState(GbIO gbio) {
+		this.gbio = gbio;
+	}
+
 	public State getState() {
 		return this.state;
 	}
@@ -104,24 +111,24 @@ public class GameState implements Runnable {
 
 	private void update() {
 		this.state = State.FREEROAM;
-		this.playerName = GbHelper.dumpBlockString(MemoryHelpers.PLAYER_NAME_START, MemoryHelpers.PLAYER_NAME_FIN);
-		this.lastOpponentName = GbHelper.dumpBlockString(0xcfd9, 0xcfe4);
+		this.playerName = GbIO.dumpBlockString(MemoryHelpers.PLAYER_NAME_START, MemoryHelpers.PLAYER_NAME_FIN);
+		this.lastOpponentName = GbIO.dumpBlockString(0xcfd9, 0xcfe4);
 
-		this.cordY = GbHelper.dumpByte(0xd360);
-		this.cordX = GbHelper.dumpByte(0xd361);
+		this.cordY = this.gbio.ram.readByte(0xd360);
+		this.cordX = this.gbio.ram.readByte(0xd361);
 
-		this.hours = GbHelper.dumpBlockInt2(0xda40);
-		this.minutes = Gb.readMemory(0xda42);
-		this.seconds = Gb.readMemory(0xda43);
-		this.frames = Gb.readMemory(0xda44);
+		this.hours = this.gbio.ram.readByte(0xda40); // 2 bytes
+		this.minutes = this.gbio.ram.readByte(0xda42);
+		this.seconds = this.gbio.ram.readByte(0xda43);
+		this.frames = this.gbio.ram.readByte(0xda44);
 
 		this.inBattle = false;
-		if (Gb.readMemory(0xd056) == 1) {
+		if (this.gbio.ram.readByte(0xd056) == 1) {
 			this.state = State.BATTLE_MAIN;
 			this.inBattle = true;
 		}
 
-		if (Gb.readMemory(0xcfc3) == 1) {
+		if (this.gbio.ram.readByte(0xcfc3) == 1) {
 			this.state = State.READING_SIGN;
 		}
 
@@ -137,8 +144,8 @@ public class GameState implements Runnable {
 		this.encounterablePokemon.clear();
 
 		for (int i = 0; i < 10; i++) {
-			int level = Gb.readMemory(baseAddress + (i * 2));
-			int pokemon = Gb.readMemory(baseAddress + (i * 2) + 1);
+			int level = this.gbio.ram.readByte(baseAddress + (i * 2));
+			int pokemon = this.gbio.ram.readByte(baseAddress + (i * 2) + 1);
 
 			this.encounterablePokemon.add(new Pokemon(pokemon, level));
 		}
@@ -148,9 +155,9 @@ public class GameState implements Runnable {
 		this.inventoryItems.clear();
 
 		int baseItemAddress = 0xd31d;
-		for (int i = 0; i < Gb.readMemory(0xd31c); i++) {
+		for (int i = 0; i < this.gbio.ram.readByte(0xd31c); i++) {
 
-			InventorySlot slot = new InventorySlot(Gb.readMemory(baseItemAddress + (i * 2)), Gb.readMemory(baseItemAddress + (i * 2) + 1));
+			InventorySlot slot = new InventorySlot(this.gbio.ram.readByte(baseItemAddress + (i * 2)), this.gbio.ram.readByte(baseItemAddress + (i * 2) + 1));
 			this.inventoryItems.add(slot);
 		}
 	}
@@ -165,16 +172,16 @@ public class GameState implements Runnable {
 	}
 
 	private void updateOnScreenText() {
-		this.txt0 = GbHelper.dumpBlockString(MemoryHelpers.LINE0_TXT_SRT, MemoryHelpers.LINE0_TXT_FIN);
-		this.txt1 = GbHelper.dumpBlockString(MemoryHelpers.LINE1_TXT_SRT, MemoryHelpers.LINE1_TXT_FIN);
-		this.txt2 = GbHelper.dumpBlockString(MemoryHelpers.LINE2_TXT_SRT, MemoryHelpers.LINE2_TXT_FIN);
-		this.txt3 = GbHelper.dumpBlockString(MemoryHelpers.LINE3_TXT_SRT, MemoryHelpers.LINE3_TXT_FIN);
-		this.txt4 = GbHelper.dumpBlockString(MemoryHelpers.LINE4_TXT_SRT, MemoryHelpers.LINE4_TXT_FIN);
-		this.txt5 = GbHelper.dumpBlockString(MemoryHelpers.LINE5_TXT_SRT, MemoryHelpers.LINE5_TXT_FIN);
-		this.txt6 = GbHelper.dumpBlockString(MemoryHelpers.LINE6_TXT_SRT, MemoryHelpers.LINE6_TXT_FIN);
-		this.txt7 = GbHelper.dumpBlockString(MemoryHelpers.LINE7_TXT_SRT, MemoryHelpers.LINE7_TXT_FIN);
-		this.txt8 = GbHelper.dumpBlockString(MemoryHelpers.LINE8_TXT_SRT, MemoryHelpers.LINE8_TXT_FIN);
-		this.txt9 = GbHelper.dumpBlockString(MemoryHelpers.LINE9_TXT_SRT, MemoryHelpers.LINE9_TXT_FIN);
+		this.txt0 = GbIO.dumpBlockString(MemoryHelpers.LINE0_TXT_SRT, MemoryHelpers.LINE0_TXT_FIN);
+		this.txt1 = GbIO.dumpBlockString(MemoryHelpers.LINE1_TXT_SRT, MemoryHelpers.LINE1_TXT_FIN);
+		this.txt2 = GbIO.dumpBlockString(MemoryHelpers.LINE2_TXT_SRT, MemoryHelpers.LINE2_TXT_FIN);
+		this.txt3 = GbIO.dumpBlockString(MemoryHelpers.LINE3_TXT_SRT, MemoryHelpers.LINE3_TXT_FIN);
+		this.txt4 = GbIO.dumpBlockString(MemoryHelpers.LINE4_TXT_SRT, MemoryHelpers.LINE4_TXT_FIN);
+		this.txt5 = GbIO.dumpBlockString(MemoryHelpers.LINE5_TXT_SRT, MemoryHelpers.LINE5_TXT_FIN);
+		this.txt6 = GbIO.dumpBlockString(MemoryHelpers.LINE6_TXT_SRT, MemoryHelpers.LINE6_TXT_FIN);
+		this.txt7 = GbIO.dumpBlockString(MemoryHelpers.LINE7_TXT_SRT, MemoryHelpers.LINE7_TXT_FIN);
+		this.txt8 = GbIO.dumpBlockString(MemoryHelpers.LINE8_TXT_SRT, MemoryHelpers.LINE8_TXT_FIN);
+		this.txt9 = GbIO.dumpBlockString(MemoryHelpers.LINE9_TXT_SRT, MemoryHelpers.LINE9_TXT_FIN);
 
 		this.onScreenText = this.txt1 + this.txt2 + this.txt3 + this.txt4 + this.txt5 + this.txt6 + this.txt7;
 

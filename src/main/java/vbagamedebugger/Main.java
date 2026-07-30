@@ -18,13 +18,13 @@ public class Main {
 
 	public static boolean run = true;
 
-	public static final GameState gameState = new GameState();
+	public final static GbIO gbio = new GbIO();
+
+	public static GameState gameState;
 
 	private static final Args args = new Args();
 
 	private static int lastPromptedInt = 0;
-
-	public final static GbIO gbio = new GbIO();
 
 	static {
 		try {
@@ -36,6 +36,8 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		new JCommander(Main.args, null, args);
+
+		Main.gameState = new GameState(Main.gbio);
 
 		System.load(System.getProperty("user.dir") + "/lib/libvba.so");
 
